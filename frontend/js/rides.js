@@ -278,7 +278,7 @@ class RidesManager {
                         <h4>${ride.driver_pseudo}</h4>
                         <div class="driver-rating">
                             <span class="stars">${this.renderStars(ride.driver_rating)}</span>
-                            <span>${ride.driver_rating.toFixed(1)} (${ride.driver_reviews_count} avis)</span>
+                            <span>${parseFloat(ride.driver_rating || 0).toFixed(1)} (${ride.driver_reviews_count || 0} avis)</span>
                         </div>
                     </div>
                 </div>

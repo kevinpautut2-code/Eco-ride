@@ -98,8 +98,8 @@ class RideDetailsManager {
         document.getElementById('driverPhoto').src = ride.driver_photo;
         document.getElementById('driverPhoto').alt = ride.driver_pseudo;
         document.getElementById('driverName').textContent = ride.driver_pseudo;
-        document.getElementById('driverRating').textContent = ride.driver_rating.toFixed(1);
-        document.getElementById('reviewsCount').textContent = ride.driver_reviews_count;
+        document.getElementById('driverRating').textContent = parseFloat(ride.driver_rating || 0).toFixed(1);
+        document.getElementById('reviewsCount').textContent = ride.driver_reviews_count || 0;
         document.getElementById('driverStars').textContent = this.renderStars(ride.driver_rating);
 
         // Stats conducteur
