@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EcoRide - La plateforme de covoiturage écologique pour des déplacements responsables">
+    <title>EcoRide - Covoiturage Écologique</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link active">
+                    <span>🏠</span>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="rides.html" class="navbar-link">
+                    <span>🚗</span>
+                    <span>Covoiturages</span>
+                </a></li>
+                <li><a href="about.html" class="navbar-link">
+                    <span>ℹ️</span>
+                    <span>À propos</span>
+                </a></li>
+                <li><a href="contact.html" class="navbar-link">
+                    <span>📧</span>
+                    <span>Contact</span>
+                </a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <!-- Login Button -->
+                <a href="login.html" class="btn btn-primary">
+                    <span>👤</span>
+                    <span>Connexion</span>
+                </a>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Voyagez Écologique, Voyagez Économique</h1>
+                <p class="hero-subtitle">
+                    Rejoignez la révolution du covoiturage vert et partagez vos trajets
+                    pour un monde plus durable
+                </p>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <form class="search-form" id="searchForm">
+                        <div class="search-field">
+                            <label for="departure">📍 Départ</label>
+                            <input
+                                type="text"
+                                id="departure"
+                                class="search-input"
+                                placeholder="Ville de départ"
+                                required
+                            >
+                        </div>
+
+                        <div class="search-field">
+                            <label for="arrival">🎯 Arrivée</label>
+                            <input
+                                type="text"
+                                id="arrival"
+                                class="search-input"
+                                placeholder="Ville d'arrivée"
+                                required
+                            >
+                        </div>
+
+                        <div class="search-field">
+                            <label for="date">📅 Date</label>
+                            <input
+                                type="date"
+                                id="date"
+                                class="search-input"
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="search-button">
+                            <span>🔍</span>
+                            <span>Rechercher</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container" style="margin-top: 4rem;">
+        <div class="text-center mb-xl">
+            <h2>Pourquoi choisir EcoRide ?</h2>
+            <p>Une plateforme moderne pour des déplacements responsables</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+            <!-- Feature 1 -->
+            <div class="card text-center">
+                <div style="font-size: 48px; margin-bottom: 1rem;">🌍</div>
+                <h3>Écologique</h3>
+                <p>Réduisez votre empreinte carbone en partageant vos trajets. Chaque covoiturage compte pour la planète !</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="card text-center">
+                <div style="font-size: 48px; margin-bottom: 1rem;">💰</div>
+                <h3>Économique</h3>
+                <p>Partagez les frais de voyage et économisez sur vos déplacements quotidiens ou occasionnels.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="card text-center">
+                <div style="font-size: 48px; margin-bottom: 1rem;">🤝</div>
+                <h3>Convivial</h3>
+                <p>Rencontrez de nouvelles personnes et créez des liens lors de vos trajets partagés.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="card text-center">
+                <div style="font-size: 48px; margin-bottom: 1rem;">⚡</div>
+                <h3>Véhicules Électriques</h3>
+                <p>Privilégiez les trajets en voiture électrique pour un impact environnemental minimal.</p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="card text-center">
+                <div style="font-size: 48px; margin-bottom: 1rem;">🔒</div>
+                <h3>Sécurisé</h3>
+                <p>Profils vérifiés, système d'avis et de notation pour voyager en toute confiance.</p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="card text-center">
+                <div style="font-size: 48px; margin-bottom: 1rem;">📱</div>
+                <h3>Simple d'utilisation</h3>
+                <p>Interface moderne et intuitive pour réserver ou proposer un trajet en quelques clics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="container mb-xl">
+        <div class="card" style="background: var(--gradient-eco); color: white; text-align: center; padding: 3rem;">
+            <h2 style="color: white; margin-bottom: 2rem;">EcoRide en chiffres</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div>
+                    <div class="stat-value" style="color: white; font-size: 3rem;">10k+</div>
+                    <div class="stat-label" style="color: rgba(255,255,255,0.9);">Utilisateurs actifs</div>
+                </div>
+                <div>
+                    <div class="stat-value" style="color: white; font-size: 3rem;">50k+</div>
+                    <div class="stat-label" style="color: rgba(255,255,255,0.9);">Trajets partagés</div>
+                </div>
+                <div>
+                    <div class="stat-value" style="color: white; font-size: 3rem;">-30%</div>
+                    <div class="stat-label" style="color: rgba(255,255,255,0.9);">Émissions CO₂</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container text-center mb-xl">
+        <div class="card" style="padding: 3rem;">
+            <h2>Prêt à commencer votre voyage vert ?</h2>
+            <p style="font-size: 1.125rem; margin-bottom: 2rem;">
+                Créez votre compte gratuitement et bénéficiez de 20 crédits de bienvenue
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="register.html" class="btn btn-primary btn-lg">
+                    <span>✨</span>
+                    <span>Créer un compte</span>
+                </a>
+                <a href="rides.html" class="btn btn-secondary btn-lg">
+                    <span>🔍</span>
+                    <span>Voir les trajets</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>EcoRide</h3>
+                    <p style="color: var(--text-secondary);">
+                        La plateforme de covoiturage qui met l'écologie au cœur de chaque trajet.
+                        Ensemble, construisons un avenir plus vert.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="rides.html">Covoiturages</a></li>
+                        <li><a href="about.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Légal</h3>
+                    <ul class="footer-links">
+                        <li><a href="legal.html">Mentions légales</a></li>
+                        <li><a href="privacy.html">Confidentialité</a></li>
+                        <li><a href="terms.html">CGU</a></li>
+                        <li><a href="cookies.html">Cookies</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="mailto:contact@ecoride.fr">
+                                📧 contact@ecoride.fr
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+33123456789">
+                                📞 +33 1 23 45 67 89
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés | Développé avec 💚 pour un monde plus vert</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>

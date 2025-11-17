@@ -1,0 +1,254 @@
+[
+  {
+    "user_id": 4,
+    "pseudo": "chauffeur",
+    "driver_preferences": {
+      "smoking": false,
+      "pets": true,
+      "music": true,
+      "conversation": "depends",
+      "luggage_size": "medium",
+      "custom": [
+        {
+          "label": "Arrêts autorisés",
+          "value": true,
+          "icon": "⏸️"
+        },
+        {
+          "label": "Climatisation",
+          "value": true,
+          "icon": "❄️"
+        },
+        {
+          "label": "Chargeur téléphone disponible",
+          "value": true,
+          "icon": "🔌"
+        }
+      ]
+    },
+    "passenger_preferences": null,
+    "updated_at": "2025-01-10T10:30:00Z"
+  },
+  {
+    "user_id": 5,
+    "pseudo": "marie_eco",
+    "driver_preferences": {
+      "smoking": false,
+      "pets": false,
+      "music": true,
+      "conversation": "yes",
+      "luggage_size": "small",
+      "custom": [
+        {
+          "label": "Voyage 100% écologique",
+          "value": true,
+          "icon": "🌱"
+        },
+        {
+          "label": "Discussions écologie bienvenues",
+          "value": true,
+          "icon": "💚"
+        }
+      ]
+    },
+    "passenger_preferences": null,
+    "updated_at": "2025-01-12T14:20:00Z"
+  },
+  {
+    "user_id": 6,
+    "pseudo": "thomas_green",
+    "driver_preferences": {
+      "smoking": false,
+      "pets": true,
+      "music": false,
+      "conversation": "no",
+      "luggage_size": "large",
+      "custom": [
+        {
+          "label": "Silence apprécié",
+          "value": true,
+          "icon": "🤫"
+        },
+        {
+          "label": "Ponctualité stricte",
+          "value": true,
+          "icon": "⏰"
+        }
+      ]
+    },
+    "passenger_preferences": null,
+    "updated_at": "2025-01-08T09:15:00Z"
+  },
+  {
+    "user_id": 7,
+    "pseudo": "julie_planet",
+    "driver_preferences": {
+      "smoking": false,
+      "pets": true,
+      "music": true,
+      "conversation": "yes",
+      "luggage_size": "medium",
+      "custom": [
+        {
+          "label": "Playlists partagées",
+          "value": true,
+          "icon": "🎵"
+        },
+        {
+          "label": "Snacks disponibles",
+          "value": true,
+          "icon": "🍿"
+        },
+        {
+          "label": "WiFi à bord",
+          "value": true,
+          "icon": "📶"
+        }
+      ]
+    },
+    "passenger_preferences": {
+      "preferred_seating": "front",
+      "temperature_preference": "cool",
+      "music_preference": "yes",
+      "conversation_level": "moderate"
+    },
+    "updated_at": "2025-01-15T16:45:00Z"
+  },
+  {
+    "user_id": 8,
+    "pseudo": "lucas_drive",
+    "driver_preferences": {
+      "smoking": false,
+      "pets": false,
+      "music": true,
+      "conversation": "depends",
+      "luggage_size": "medium",
+      "custom": [
+        {
+          "label": "Sport et actualités OK",
+          "value": true,
+          "icon": "⚽"
+        },
+        {
+          "label": "Stops restaurants uniquement",
+          "value": true,
+          "icon": "🍽️"
+        }
+      ]
+    },
+    "passenger_preferences": {
+      "preferred_seating": "back",
+      "temperature_preference": "warm",
+      "music_preference": "no",
+      "conversation_level": "minimal"
+    },
+    "updated_at": "2025-01-11T11:00:00Z"
+  },
+  {
+    "user_id": 9,
+    "pseudo": "emma_green",
+    "driver_preferences": {
+      "smoking": false,
+      "pets": true,
+      "music": true,
+      "conversation": "yes",
+      "luggage_size": "large",
+      "custom": [
+        {
+          "label": "Vélo pliable accepté",
+          "value": true,
+          "icon": "🚲"
+        },
+        {
+          "label": "Ambiance bonne humeur garantie",
+          "value": true,
+          "icon": "😊"
+        },
+        {
+          "label": "Recommandations locales",
+          "value": true,
+          "icon": "📍"
+        }
+      ]
+    },
+    "passenger_preferences": null,
+    "updated_at": "2025-01-13T13:30:00Z"
+  },
+  {
+    "user_id": 10,
+    "pseudo": "passager",
+    "driver_preferences": null,
+    "passenger_preferences": {
+      "preferred_seating": "back",
+      "temperature_preference": "moderate",
+      "music_preference": "yes",
+      "conversation_level": "moderate",
+      "special_needs": []
+    },
+    "updated_at": "2025-01-09T08:00:00Z"
+  },
+  {
+    "user_id": 11,
+    "pseudo": "pierre_voyage",
+    "driver_preferences": null,
+    "passenger_preferences": {
+      "preferred_seating": "front",
+      "temperature_preference": "cool",
+      "music_preference": "yes",
+      "conversation_level": "high",
+      "special_needs": [
+        {
+          "type": "allergy",
+          "description": "Allergique aux parfums forts",
+          "icon": "🤧"
+        }
+      ]
+    },
+    "updated_at": "2025-01-14T15:20:00Z"
+  },
+  {
+    "user_id": 12,
+    "pseudo": "sarah_travel",
+    "driver_preferences": null,
+    "passenger_preferences": {
+      "preferred_seating": "back",
+      "temperature_preference": "warm",
+      "music_preference": "depends",
+      "conversation_level": "low",
+      "special_needs": []
+    },
+    "updated_at": "2025-01-10T12:45:00Z"
+  },
+  {
+    "user_id": 13,
+    "pseudo": "alex_road",
+    "driver_preferences": null,
+    "passenger_preferences": {
+      "preferred_seating": "front",
+      "temperature_preference": "cool",
+      "music_preference": "no",
+      "conversation_level": "minimal",
+      "special_needs": [
+        {
+          "type": "mobility",
+          "description": "Besoin d'aide pour les bagages",
+          "icon": "🧳"
+        }
+      ]
+    },
+    "updated_at": "2025-01-16T09:30:00Z"
+  },
+  {
+    "user_id": 14,
+    "pseudo": "nadia_eco",
+    "driver_preferences": null,
+    "passenger_preferences": {
+      "preferred_seating": "front",
+      "temperature_preference": "moderate",
+      "music_preference": "yes",
+      "conversation_level": "moderate",
+      "special_needs": []
+    },
+    "updated_at": "2025-01-12T10:15:00Z"
+  }
+]

@@ -1,0 +1,165 @@
+[
+  {
+    "review_id": 1,
+    "booking_id": 1,
+    "ride_id": 11,
+    "reviewer": {
+      "user_id": 10,
+      "pseudo": "passager",
+      "photo_url": "https://i.pravatar.cc/150?img=10"
+    },
+    "reviewed_user": {
+      "user_id": 4,
+      "pseudo": "chauffeur",
+      "photo_url": "https://i.pravatar.cc/150?img=4"
+    },
+    "rating": 5,
+    "ratings_detail": {
+      "punctuality": 5,
+      "driving": 5,
+      "communication": 5,
+      "vehicle_cleanliness": 5,
+      "friendliness": 5
+    },
+    "comment": "Excellent chauffeur ! Très ponctuel et agréable. Voiture propre et confortable. Je recommande vivement !",
+    "positive_points": [
+      "Ponctualité",
+      "Propreté du véhicule",
+      "Conduite sécuritaire",
+      "Bonne ambiance"
+    ],
+    "images": [],
+    "helpful_count": 8,
+    "status": "approved",
+    "moderation": {
+      "reviewed_by": 2,
+      "reviewed_at": "2025-01-15T10:30:00Z",
+      "notes": "Avis positif et constructif"
+    },
+    "created_at": "2025-01-14T18:45:00Z",
+    "updated_at": "2025-01-15T10:30:00Z"
+  },
+  {
+    "review_id": 2,
+    "booking_id": 2,
+    "ride_id": 11,
+    "reviewer": {
+      "user_id": 11,
+      "pseudo": "pierre_voyage",
+      "photo_url": "https://i.pravatar.cc/150?img=11"
+    },
+    "reviewed_user": {
+      "user_id": 4,
+      "pseudo": "chauffeur",
+      "photo_url": "https://i.pravatar.cc/150?img=4"
+    },
+    "rating": 4,
+    "ratings_detail": {
+      "punctuality": 4,
+      "driving": 5,
+      "communication": 4,
+      "vehicle_cleanliness": 4,
+      "friendliness": 4
+    },
+    "comment": "Très bon trajet, chauffeur sympathique. Quelques arrêts non prévus mais rien de grave.",
+    "positive_points": [
+      "Conduite sécuritaire",
+      "Sympathique",
+      "Véhicule confortable"
+    ],
+    "improvement_suggestions": [
+      "Respecter davantage l'itinéraire prévu"
+    ],
+    "images": [],
+    "helpful_count": 5,
+    "status": "approved",
+    "moderation": {
+      "reviewed_by": 2,
+      "reviewed_at": "2025-01-15T10:32:00Z",
+      "notes": "Avis équilibré"
+    },
+    "created_at": "2025-01-14T19:20:00Z",
+    "updated_at": "2025-01-15T10:32:00Z"
+  },
+  {
+    "review_id": 3,
+    "booking_id": 3,
+    "ride_id": 12,
+    "reviewer": {
+      "user_id": 12,
+      "pseudo": "sarah_travel",
+      "photo_url": "https://i.pravatar.cc/150?img=12"
+    },
+    "reviewed_user": {
+      "user_id": 5,
+      "pseudo": "marie_eco",
+      "photo_url": "https://i.pravatar.cc/150?img=5"
+    },
+    "rating": 5,
+    "ratings_detail": {
+      "punctuality": 5,
+      "driving": 5,
+      "communication": 5,
+      "vehicle_cleanliness": 5,
+      "friendliness": 5
+    },
+    "comment": "Marie est une conductrice parfaite ! Conduite écologique et sécuritaire. Super expérience.",
+    "positive_points": [
+      "Conduite écologique",
+      "Très professionnelle",
+      "Excellente communication",
+      "Véhicule impeccable",
+      "Discussions intéressantes sur l'environnement"
+    ],
+    "ecological_note": "Trajet 100% électrique, recharge aux bornes vertes. Vraiment engagée pour la planète !",
+    "images": [],
+    "helpful_count": 12,
+    "status": "approved",
+    "moderation": {
+      "reviewed_by": 2,
+      "reviewed_at": "2025-01-16T09:15:00Z",
+      "notes": "Excellent avis détaillé"
+    },
+    "created_at": "2025-01-15T20:00:00Z",
+    "updated_at": "2025-01-16T09:15:00Z"
+  },
+  {
+    "review_id": 4,
+    "booking_id": 4,
+    "ride_id": 1,
+    "reviewer": {
+      "user_id": 10,
+      "pseudo": "passager",
+      "photo_url": "https://i.pravatar.cc/150?img=10"
+    },
+    "reviewed_user": {
+      "user_id": 4,
+      "pseudo": "chauffeur",
+      "photo_url": "https://i.pravatar.cc/150?img=4"
+    },
+    "rating": 5,
+    "ratings_detail": {
+      "punctuality": 5,
+      "driving": 5,
+      "communication": 5,
+      "vehicle_cleanliness": 5,
+      "friendliness": 5
+    },
+    "comment": "Toujours aussi parfait ! Merci pour ce trajet agréable.",
+    "positive_points": [
+      "Régularité",
+      "Fiabilité",
+      "Professionnalisme"
+    ],
+    "images": [],
+    "helpful_count": 0,
+    "status": "pending",
+    "moderation": {
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "notes": null
+    },
+    "created_at": "2025-01-17T14:30:00Z",
+    "updated_at": "2025-01-17T14:30:00Z"
+  }
+]

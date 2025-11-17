@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trouvez votre covoiturage écologique sur EcoRide">
+    <title>Covoiturages - EcoRide</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link">
+                    <span>🏠</span>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="rides.html" class="navbar-link active">
+                    <span>🚗</span>
+                    <span>Covoiturages</span>
+                </a></li>
+                <li><a href="about.html" class="navbar-link">
+                    <span>ℹ️</span>
+                    <span>À propos</span>
+                </a></li>
+                <li><a href="contact.html" class="navbar-link">
+                    <span>📧</span>
+                    <span>Contact</span>
+                </a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <a href="login.html" class="btn btn-primary">
+                    <span>👤</span>
+                    <span>Connexion</span>
+                </a>
+
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <!-- Search Bar -->
+        <div class="search-bar mb-xl">
+            <form class="search-form" id="searchForm">
+                <div class="search-field">
+                    <label for="departure">📍 Départ</label>
+                    <input
+                        type="text"
+                        id="departure"
+                        class="search-input"
+                        placeholder="Ville de départ"
+                        required
+                    >
+                </div>
+
+                <div class="search-field">
+                    <label for="arrival">🎯 Arrivée</label>
+                    <input
+                        type="text"
+                        id="arrival"
+                        class="search-input"
+                        placeholder="Ville d'arrivée"
+                        required
+                    >
+                </div>
+
+                <div class="search-field">
+                    <label for="date">📅 Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        class="search-input"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="search-button">
+                    <span>🔍</span>
+                    <span>Rechercher</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Filters Panel -->
+        <div class="filters-panel" id="filtersPanel">
+            <div class="filters-header">
+                <h3 class="filters-title">🎚️ Filtres</h3>
+                <button class="filters-reset" id="resetFilters">Réinitialiser</button>
+            </div>
+
+            <div class="filters-grid">
+                <!-- Filtre écologique -->
+                <div class="filter-group">
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="filterEco" class="checkbox-input">
+                        <span class="checkbox-label">⚡ Véhicules électriques uniquement</span>
+                    </label>
+                </div>
+
+                <!-- Filtre prix -->
+                <div class="filter-group">
+                    <label class="filter-label" for="filterPrice">
+                        💰 Prix maximum: <span class="range-value" id="priceValue">100 crédits</span>
+                    </label>
+                    <input type="range" id="filterPrice" class="range-input" min="10" max="100" value="100" step="5">
+                </div>
+
+                <!-- Filtre durée -->
+                <div class="filter-group">
+                    <label class="filter-label" for="filterDuration">
+                        ⏱️ Durée maximum: <span class="range-value" id="durationValue">8 heures</span>
+                    </label>
+                    <input type="range" id="filterDuration" class="range-input" min="1" max="12" value="8" step="1">
+                </div>
+
+                <!-- Filtre note -->
+                <div class="filter-group">
+                    <label class="filter-label" for="filterRating">
+                        ⭐ Note minimum: <span class="range-value" id="ratingValue">0.0</span>
+                    </label>
+                    <input type="range" id="filterRating" class="range-input" min="0" max="5" value="0" step="0.5">
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin: 2rem 0 1rem;">
+            <h2 id="resultsTitle">Covoiturages disponibles</h2>
+            <div style="color: var(--text-tertiary); font-size: var(--font-size-sm);">
+                <span id="resultsCount">0</span> trajet(s) trouvé(s)
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center" style="padding: 4rem; display: none;">
+            <div class="loading-spinner" style="margin: 0 auto;"></div>
+            <p style="margin-top: 1rem; color: var(--text-tertiary);">Recherche des trajets disponibles...</p>
+        </div>
+
+        <!-- No Results -->
+        <div id="noResultsState" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">🔍</div>
+            <h3 class="empty-state-title">Aucun trajet trouvé</h3>
+            <p class="empty-state-text" id="noResultsMessage">
+                Nous n'avons pas trouvé de trajet correspondant à vos critères.
+            </p>
+            <button class="btn btn-primary" id="modifySearchBtn">
+                <span>🔄</span>
+                <span>Modifier la recherche</span>
+            </button>
+        </div>
+
+        <!-- Rides List -->
+        <div id="ridesList" style="display: grid; gap: 1.5rem;">
+            <!-- Les cartes de covoiturage seront insérées ici par JavaScript -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>EcoRide</h3>
+                    <p style="color: var(--text-secondary);">
+                        La plateforme de covoiturage qui met l'écologie au cœur de chaque trajet.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="rides.html">Covoiturages</a></li>
+                        <li><a href="about.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Légal</h3>
+                    <ul class="footer-links">
+                        <li><a href="legal.html">Mentions légales</a></li>
+                        <li><a href="privacy.html">Confidentialité</a></li>
+                        <li><a href="terms.html">CGU</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@ecoride.fr">📧 contact@ecoride.fr</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/rides.js"></script>
+</body>
+</html>
