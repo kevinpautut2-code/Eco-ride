@@ -621,6 +621,150 @@ try {
         }
     }
 
+    // GET /rides/{id}/bookings - Réservations d'un trajet
+    if ($method === 'GET' && preg_match('#^/rides/(\d+)/bookings$#', $uri, $matches)) {
+        $rideId = $matches[1];
+
+        $stmt = $conn->prepare("
+            SELECT
+                b.*,
+                u.pseudo as passenger_pseudo,
+                u.photo_url as passenger_photo
+            FROM bookings b
+            LEFT JOIN users u ON b.passenger_id = u.id
+            WHERE b.ride_id = ? AND b.status = 'confirmed'
+            ORDER BY b.created_at ASC
+        ");
+        $stmt->execute([$rideId]);
+        $bookings = $stmt->fetchAll();
+
+        sendResponse([
+            'success' => true,
+            'bookings' => $bookings
+        ]);
+    }
+
+    // POST /rides/{id}/start - Démarrer un trajet
+    if ($method === 'POST' && preg_match('#^/rides/(\d+)/start$#', $uri, $matches)) {
+        $rideId = $matches[1];
+        $data = getRequestBody();
+
+        // Vérifier que le trajet existe
+        $stmt = $conn->prepare("SELECT * FROM rides WHERE id = ?");
+        $stmt->execute([$rideId]);
+        $ride = $stmt->fetch();
+
+        if (!$ride) {
+            sendResponse(['error' => 'Trajet non trouvé'], 404);
+        }
+
+        if ($ride['status'] !== 'available' && $ride['status'] !== 'pending') {
+            sendResponse(['error' => 'Ce trajet ne peut pas être démarré (statut: ' . $ride['status'] . ')'], 400);
+        }
+
+        try {
+            // Mettre à jour le statut et l'heure de départ réelle
+            $stmt = $conn->prepare("
+                UPDATE rides
+                SET status = 'in_progress',
+                    actual_start_datetime = NOW()
+                WHERE id = ?
+            ");
+            $stmt->execute([$rideId]);
+
+            // TODO: Envoyer email aux passagers
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Trajet démarré avec succès',
+                'actual_start_datetime' => date('Y-m-d H:i:s')
+            ]);
+        } catch (Exception $e) {
+            sendResponse(['error' => 'Erreur lors du démarrage: ' . $e->getMessage()], 500);
+        }
+    }
+
+    // POST /rides/{id}/complete - Terminer un trajet
+    if ($method === 'POST' && preg_match('#^/rides/(\d+)/complete$#', $uri, $matches)) {
+        $rideId = $matches[1];
+        $data = getRequestBody();
+
+        // Vérifier que le trajet existe
+        $stmt = $conn->prepare("SELECT * FROM rides WHERE id = ?");
+        $stmt->execute([$rideId]);
+        $ride = $stmt->fetch();
+
+        if (!$ride) {
+            sendResponse(['error' => 'Trajet non trouvé'], 404);
+        }
+
+        if ($ride['status'] !== 'in_progress') {
+            sendResponse(['error' => 'Ce trajet n\'est pas en cours'], 400);
+        }
+
+        // Transaction pour terminer le trajet et créditer le conducteur
+        $conn->beginTransaction();
+
+        try {
+            // Compter les passagers confirmés
+            $stmt = $conn->prepare("
+                SELECT COUNT(*) FROM bookings WHERE ride_id = ? AND status = 'confirmed'
+            ");
+            $stmt->execute([$rideId]);
+            $passengerCount = $stmt->fetchColumn();
+
+            // Calculer les gains (prix - 2 crédits plateforme) * nombre de passagers
+            $earningsPerPassenger = max(0, $ride['price_credits'] - 2);
+            $totalEarnings = $earningsPerPassenger * $passengerCount;
+
+            // Créditer le conducteur
+            $stmt = $conn->prepare("
+                UPDATE users SET credits = credits + ? WHERE id = ?
+            ");
+            $stmt->execute([$totalEarnings, $ride['driver_id']]);
+
+            // Récupérer le nouveau solde
+            $stmt = $conn->prepare("SELECT credits FROM users WHERE id = ?");
+            $stmt->execute([$ride['driver_id']]);
+            $newCredits = $stmt->fetchColumn();
+
+            // Log la transaction
+            $stmt = $conn->prepare("
+                INSERT INTO credits_transactions (user_id, amount, transaction_type, description)
+                VALUES (?, ?, 'credit', ?)
+            ");
+            $stmt->execute([
+                $ride['driver_id'],
+                $totalEarnings,
+                'Revenus trajet #' . $rideId . ' (' . $passengerCount . ' passager(s))'
+            ]);
+
+            // Mettre à jour le trajet
+            $stmt = $conn->prepare("
+                UPDATE rides
+                SET status = 'completed',
+                    actual_end_datetime = NOW()
+                WHERE id = ?
+            ");
+            $stmt->execute([$rideId]);
+
+            $conn->commit();
+
+            // TODO: Envoyer email aux passagers pour demander avis
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Trajet terminé avec succès',
+                'credits_earned' => $totalEarnings,
+                'new_credits' => $newCredits,
+                'passenger_count' => $passengerCount
+            ]);
+        } catch (Exception $e) {
+            $conn->rollBack();
+            sendResponse(['error' => 'Erreur lors de la fin du trajet: ' . $e->getMessage()], 500);
+        }
+    }
+
     // Route non trouvée
     sendResponse(['error' => 'Endpoint non trouvé: ' . $method . ' ' . $uri], 404);
 
