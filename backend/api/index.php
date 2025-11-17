@@ -35,7 +35,21 @@ function sendResponse($data, $statusCode = 200) {
 
 // Fonction pour récupérer le body JSON
 function getRequestBody() {
-    return json_decode(file_get_contents('php://input'), true) ?? [];
+    $input = file_get_contents('php://input');
+
+    if (!empty($input)) {
+        $decoded = json_decode($input, true);
+        if (json_last_error() === JSON_ERROR_NONE && $decoded !== null) {
+            return $decoded;
+        }
+    }
+
+    // Fallback to $_POST if php://input is empty
+    if (!empty($_POST)) {
+        return $_POST;
+    }
+
+    return [];
 }
 
 // Router simple
@@ -194,16 +208,16 @@ try {
                 u.pseudo as driver_pseudo,
                 u.email as driver_email,
                 u.photo_url as driver_photo,
-                u.phone as driver_phone,
                 v.brand,
                 v.model,
                 v.color,
                 v.energy_type,
-                v.year,
-                v.seats as vehicle_seats,
+                v.first_registration_date,
+                v.seats_available as vehicle_seats,
                 TIMESTAMPDIFF(HOUR, r.departure_datetime, r.arrival_datetime) as duration_hours,
                 (SELECT AVG(rating) FROM reviews WHERE driver_id = r.driver_id) as driver_rating,
                 (SELECT COUNT(*) FROM rides WHERE driver_id = r.driver_id AND status = 'completed') as driver_total_rides,
+                (SELECT COUNT(*) FROM reviews WHERE driver_id = r.driver_id) as driver_reviews_count,
                 (r.seats_available - COALESCE((SELECT COUNT(*) FROM bookings WHERE ride_id = r.id AND status = 'confirmed'), 0)) as seats_left
             FROM rides r
             LEFT JOIN users u ON r.driver_id = u.id
