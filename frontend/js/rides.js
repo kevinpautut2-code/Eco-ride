@@ -390,7 +390,7 @@ class RidesManager {
         if (this.ridesList) this.ridesList.style.display = 'grid';
     }
 
-    showNoResults() {
+    async showNoResults() {
         if (this.noResultsState) {
             this.noResultsState.style.display = 'block';
             this.resultsCount.textContent = '0';
@@ -400,14 +400,94 @@ class RidesManager {
         // Message personnalisé selon la recherche
         const message = document.getElementById('noResultsMessage');
         if (message && this.searchParams.date) {
-            // Essayer de trouver le prochain trajet disponible
-            message.innerHTML = `
-                Aucun trajet trouvé pour cette date.<br>
-                <a href="#" onclick="return false;" style="color: var(--primary-green);">
-                    Voir les trajets des prochains jours
-                </a>
-            `;
+            // Essayer de trouver des trajets aux dates alternatives
+            message.innerHTML = 'Aucun trajet trouvé pour cette date.<br>Recherche de dates alternatives...';
+
+            try {
+                const alternativeDates = await this.findAlternativeDates();
+
+                if (alternativeDates.length > 0) {
+                    let datesHTML = alternativeDates.map(alt => {
+                        const dateObj = new Date(alt.date);
+                        const formattedDate = dateObj.toLocaleDateString('fr-FR', {
+                            weekday: 'long', day: 'numeric', month: 'long'
+                        });
+                        return `
+                            <button class="btn btn-secondary btn-sm"
+                                    onclick="window.ridesManager.searchAlternativeDate('${alt.date}')"
+                                    style="margin: 0.25rem;">
+                                ${formattedDate} (${alt.count} trajet${alt.count > 1 ? 's' : ''})
+                            </button>
+                        `;
+                    }).join('');
+
+                    message.innerHTML = `
+                        <strong>Aucun trajet trouvé pour cette date.</strong><br><br>
+                        <div style="margin-top: 1rem;">
+                            <p style="margin-bottom: 0.5rem;">Trajets disponibles aux dates suivantes:</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+                                ${datesHTML}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    message.innerHTML = `
+                        Aucun trajet trouvé pour ce trajet dans les 7 prochains jours.<br>
+                        <a href="create-ride.html" class="btn btn-primary" style="margin-top: 1rem;">
+                            Créer un trajet
+                        </a>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error finding alternatives:', error);
+                message.innerHTML = 'Aucun trajet trouvé pour cette date.';
+            }
         }
+    }
+
+    async findAlternativeDates() {
+        const alternatives = [];
+        const searchDate = new Date(this.searchParams.date);
+
+        // Chercher les 7 prochains jours
+        for (let i = 1; i <= 7; i++) {
+            const testDate = new Date(searchDate);
+            testDate.setDate(testDate.getDate() + i);
+            const dateStr = testDate.toISOString().split('T')[0];
+
+            try {
+                const response = await window.apiClient.searchRides({
+                    departure_city: this.searchParams.departure,
+                    arrival_city: this.searchParams.arrival,
+                    date: dateStr
+                });
+
+                if (response.success && response.rides && response.rides.length > 0) {
+                    alternatives.push({
+                        date: dateStr,
+                        count: response.rides.length
+                    });
+                }
+
+                // Limiter à 3 dates alternatives
+                if (alternatives.length >= 3) break;
+            } catch (error) {
+                console.error(`Error checking date ${dateStr}:`, error);
+            }
+        }
+
+        return alternatives;
+    }
+
+    searchAlternativeDate(date) {
+        // Mettre à jour le champ de date
+        if (this.dateInput) {
+            this.dateInput.value = date;
+        }
+
+        // Relancer la recherche
+        this.searchParams.date = date;
+        this.performSearch();
     }
 
     hideNoResults() {
