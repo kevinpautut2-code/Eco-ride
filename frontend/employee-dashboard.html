@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Employé - EcoRide</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide Employé</span>
+            </a>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-danger" onclick="window.authManager.logout()">
+                    <span>🚪</span>
+                    <span>Déconnexion</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <div class="card mb-lg" style="background: var(--gradient-dark); color: white;">
+            <div class="card-body" style="padding: 2rem;">
+                <h1 style="color: white; margin-bottom: 0.5rem;">🛡️ Espace Employé</h1>
+                <p style="color: rgba(255,255,255,0.9); margin: 0;">Modération et gestion des litiges</p>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">📝</div>
+                    <div class="stat-value" id="pendingReviews">5</div>
+                    <div class="stat-label">Avis en attente</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚠️</div>
+                    <div class="stat-value" id="activeDisputes">3</div>
+                    <div class="stat-label">Litiges actifs</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">✅</div>
+                    <div class="stat-value" id="resolvedToday">12</div>
+                    <div class="stat-label">Résolus aujourd'hui</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚫</div>
+                    <div class="stat-value" id="rejectedReviews">2</div>
+                    <div class="stat-label">Avis rejetés</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Moderation -->
+        <div class="card mb-lg">
+            <div class="card-header">
+                <h3 class="card-title">📝 Modération des avis</h3>
+            </div>
+            <div class="card-body">
+                <div id="reviewsList">
+                    <!-- Review 1 -->
+                    <div class="card mb-md" style="border: 2px solid var(--border-medium);">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">Avis sur le trajet #1245</h4>
+                                    <p style="color: var(--text-tertiary); margin: 0;">Paris → Lyon • 15 janvier 2025</p>
+                                </div>
+                                <span class="badge badge-warning">En attente</span>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1rem;">
+                                <div>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Auteur:</strong> Jean Dupont (@jeandupont)</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Chauffeur:</strong> Marie Martin (@mariemartin)</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Note globale:</strong> ⭐ 5/5</p>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Ponctualité:</strong> ⭐ 5/5</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Conduite:</strong> ⭐ 5/5</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Véhicule:</strong> ⭐ 5/5</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                                <p style="margin: 0;"><strong>Commentaire:</strong></p>
+                                <p style="margin: 0.5rem 0 0 0;">"Excellente expérience ! Marie est très ponctuelle et conduit de manière sécuritaire. Le véhicule était propre et confortable. Je recommande vivement !"</p>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-success" onclick="moderateReview(1245, 'approve')">
+                                    <span>✅</span>
+                                    <span>Approuver</span>
+                                </button>
+                                <button class="btn btn-danger" onclick="moderateReview(1245, 'reject')">
+                                    <span>❌</span>
+                                    <span>Rejeter</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="flagReview(1245)">
+                                    <span>🚩</span>
+                                    <span>Signaler</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="card mb-md" style="border: 2px solid var(--border-medium);">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">Avis sur le trajet #1246</h4>
+                                    <p style="color: var(--text-tertiary); margin: 0;">Marseille → Nice • 16 janvier 2025</p>
+                                </div>
+                                <span class="badge badge-warning">En attente</span>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1rem;">
+                                <div>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Auteur:</strong> Sophie Bernard (@sophieb)</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Chauffeur:</strong> Pierre Durand (@pierred)</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Note globale:</strong> ⭐ 2/5</p>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Ponctualité:</strong> ⭐ 1/5</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Conduite:</strong> ⭐ 3/5</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Véhicule:</strong> ⭐ 2/5</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                                <p style="margin: 0;"><strong>Commentaire:</strong></p>
+                                <p style="margin: 0.5rem 0 0 0; color: var(--danger-red);">"Retard de 30 minutes sans prévenir. Véhicule sale. Je ne recommande pas du tout ce chauffeur qui est vraiment incompétent."</p>
+                            </div>
+
+                            <div class="alert alert-warning" style="margin-bottom: 1rem;">
+                                ⚠️ <strong>Attention:</strong> Cet avis contient un langage potentiellement inapproprié
+                            </div>
+
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-success" onclick="moderateReview(1246, 'approve')">
+                                    <span>✅</span>
+                                    <span>Approuver</span>
+                                </button>
+                                <button class="btn btn-danger" onclick="moderateReview(1246, 'reject')">
+                                    <span>❌</span>
+                                    <span>Rejeter</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="flagReview(1246)">
+                                    <span>🚩</span>
+                                    <span>Signaler</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dispute Management -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">⚖️ Gestion des litiges</h3>
+            </div>
+            <div class="card-body">
+                <div id="disputesList">
+                    <!-- Dispute 1 -->
+                    <div class="card mb-md" style="border: 2px solid var(--warning-orange);">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">Litige #D-001 • Trajet #1247</h4>
+                                    <p style="color: var(--text-tertiary); margin: 0;">Ouvert le 16 janvier 2025 à 14:30</p>
+                                </div>
+                                <span class="badge badge-danger">Urgent</span>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1rem;">
+                                <div>
+                                    <h5 style="margin-bottom: 0.5rem;">👤 Chauffeur</h5>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Pseudo:</strong> @julienmartin</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Email:</strong> julien.martin@email.fr</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Note:</strong> ⭐ 4.7/5</p>
+                                </div>
+                                <div>
+                                    <h5 style="margin-bottom: 0.5rem;">🎒 Passager</h5>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Pseudo:</strong> @luciedubois</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Email:</strong> lucie.dubois@email.fr</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Note:</strong> ⭐ 4.2/5</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>🚗 Détails du trajet:</strong></p>
+                                <p style="margin: 0 0 0.5rem 0;">📍 <strong>Départ:</strong> Toulouse, 5 Place du Capitole</p>
+                                <p style="margin: 0 0 0.5rem 0;">🎯 <strong>Arrivée:</strong> Bordeaux, Gare Saint-Jean</p>
+                                <p style="margin: 0 0 0.5rem 0;">📅 <strong>Date:</strong> 16 janvier 2025 à 10:00</p>
+                                <p style="margin: 0;"><strong>💰 Prix:</strong> 45 crédits</p>
+                            </div>
+
+                            <div style="background: var(--warning-light); padding: 1rem; border-radius: var(--radius-md); border-left: 4px solid var(--warning-orange); margin-bottom: 1rem;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>🚨 Motif du litige:</strong></p>
+                                <p style="margin: 0;"><strong>Passager:</strong> "Le chauffeur n'est jamais venu au point de rendez-vous. J'ai attendu 45 minutes et appelé plusieurs fois sans réponse. J'ai dû prendre un autre moyen de transport. Je demande un remboursement complet."</p>
+                            </div>
+
+                            <div style="background: var(--info-light); padding: 1rem; border-radius: var(--radius-md); border-left: 4px solid var(--info-blue); margin-bottom: 1rem;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>💬 Réponse du chauffeur:</strong></p>
+                                <p style="margin: 0;">"J'étais bien au point de rendez-vous indiqué dans l'application. J'ai attendu 20 minutes et envoyé 3 messages sans réponse. J'ai dû partir pour respecter l'horaire d'arrivée. Je pense qu'il y a eu confusion sur le lieu."</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">📝 Décision et commentaires</label>
+                                <textarea class="form-control" rows="3" id="dispute001-decision" placeholder="Expliquez votre décision et les actions prises..."></textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="btn btn-success" onclick="resolveDispute('D-001', 'refund-passenger')">
+                                    <span>💰</span>
+                                    <span>Rembourser le passager</span>
+                                </button>
+                                <button class="btn btn-primary" onclick="resolveDispute('D-001', 'refund-50')">
+                                    <span>🤝</span>
+                                    <span>Remboursement partiel (50%)</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="resolveDispute('D-001', 'favor-driver')">
+                                    <span>🚗</span>
+                                    <span>En faveur du chauffeur</span>
+                                </button>
+                                <button class="btn btn-danger" onclick="escalateDispute('D-001')">
+                                    <span>⚠️</span>
+                                    <span>Escalader au support</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dispute 2 -->
+                    <div class="card mb-md" style="border: 2px solid var(--warning-orange);">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">Litige #D-002 • Trajet #1248</h4>
+                                    <p style="color: var(--text-tertiary); margin: 0;">Ouvert le 17 janvier 2025 à 09:15</p>
+                                </div>
+                                <span class="badge badge-warning">En cours</span>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1rem;">
+                                <div>
+                                    <h5 style="margin-bottom: 0.5rem;">👤 Chauffeur</h5>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Pseudo:</strong> @thomasleblanc</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Email:</strong> thomas.leblanc@email.fr</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Note:</strong> ⭐ 4.9/5</p>
+                                </div>
+                                <div>
+                                    <h5 style="margin-bottom: 0.5rem;">🎒 Passager</h5>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Pseudo:</strong> @emilieroy</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Email:</strong> emilie.roy@email.fr</p>
+                                    <p style="margin-bottom: 0.25rem;"><strong>Note:</strong> ⭐ 3.8/5</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>🚗 Détails du trajet:</strong></p>
+                                <p style="margin: 0 0 0.5rem 0;">📍 <strong>Départ:</strong> Nantes, Place du Commerce</p>
+                                <p style="margin: 0 0 0.5rem 0;">🎯 <strong>Arrivée:</strong> Rennes, Gare SNCF</p>
+                                <p style="margin: 0 0 0.5rem 0;">📅 <strong>Date:</strong> 17 janvier 2025 à 07:00</p>
+                                <p style="margin: 0;"><strong>💰 Prix:</strong> 30 crédits</p>
+                            </div>
+
+                            <div style="background: var(--warning-light); padding: 1rem; border-radius: var(--radius-md); border-left: 4px solid var(--warning-orange); margin-bottom: 1rem;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>🚨 Motif du litige:</strong></p>
+                                <p style="margin: 0;"><strong>Chauffeur:</strong> "La passagère a endommagé le siège arrière avec une boisson renversée. Elle refuse de prendre ses responsabilités. Je demande une compensation pour le nettoyage."</p>
+                            </div>
+
+                            <div style="background: var(--info-light); padding: 1rem; border-radius: var(--radius-md); border-left: 4px solid var(--info-blue); margin-bottom: 1rem;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>💬 Réponse du passager:</strong></p>
+                                <p style="margin: 0;">"J'ai effectivement renversé un peu de café, mais j'ai immédiatement nettoyé avec des mouchoirs. Le siège n'était déjà pas très propre à mon arrivée. Je trouve la demande excessive."</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">📝 Décision et commentaires</label>
+                                <textarea class="form-control" rows="3" id="dispute002-decision" placeholder="Expliquez votre décision et les actions prises..."></textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="btn btn-success" onclick="resolveDispute('D-002', 'compensate-driver')">
+                                    <span>💰</span>
+                                    <span>Compenser le chauffeur</span>
+                                </button>
+                                <button class="btn btn-primary" onclick="resolveDispute('D-002', 'minor-compensation')">
+                                    <span>🤝</span>
+                                    <span>Compensation mineure</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="resolveDispute('D-002', 'favor-passenger')">
+                                    <span>🎒</span>
+                                    <span>En faveur du passager</span>
+                                </button>
+                                <button class="btn btn-danger" onclick="escalateDispute('D-002')">
+                                    <span>⚠️</span>
+                                    <span>Escalader au support</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Vérifier les droits employé
+        if (window.authManager && window.authManager.isAuthenticated()) {
+            const user = window.authManager.getCurrentUser();
+            if (user.role !== 'employee' && user.role !== 'admin') {
+                alert('Accès refusé. Cette page est réservée aux employés.');
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        // Fonctions de modération des avis
+        function moderateReview(rideId, action) {
+            if (action === 'approve') {
+                alert(`✅ Avis sur le trajet #${rideId} approuvé avec succès !`);
+            } else if (action === 'reject') {
+                const reason = prompt('Raison du rejet:');
+                if (reason) {
+                    alert(`❌ Avis sur le trajet #${rideId} rejeté.\nRaison: ${reason}`);
+                }
+            }
+            // Dans une vraie application, on ferait un appel API ici
+            // Recharger la liste
+            location.reload();
+        }
+
+        function flagReview(rideId) {
+            const reason = prompt('Motif du signalement:');
+            if (reason) {
+                alert(`🚩 Avis sur le trajet #${rideId} signalé pour vérification approfondie.\nMotif: ${reason}`);
+            }
+        }
+
+        // Fonctions de gestion des litiges
+        function resolveDispute(disputeId, resolution) {
+            const decisionElement = document.getElementById(`dispute${disputeId.replace('-', '')}-decision`);
+            const decision = decisionElement ? decisionElement.value : '';
+
+            if (!decision) {
+                alert('⚠️ Veuillez saisir une décision et des commentaires avant de résoudre le litige.');
+                return;
+            }
+
+            let message = '';
+            switch(resolution) {
+                case 'refund-passenger':
+                    message = `✅ Litige ${disputeId} résolu: Remboursement complet du passager.\n\nDécision: ${decision}`;
+                    break;
+                case 'refund-50':
+                    message = `✅ Litige ${disputeId} résolu: Remboursement de 50% pour le passager.\n\nDécision: ${decision}`;
+                    break;
+                case 'favor-driver':
+                    message = `✅ Litige ${disputeId} résolu: En faveur du chauffeur. Aucun remboursement.\n\nDécision: ${decision}`;
+                    break;
+                case 'compensate-driver':
+                    message = `✅ Litige ${disputeId} résolu: Compensation versée au chauffeur.\n\nDécision: ${decision}`;
+                    break;
+                case 'minor-compensation':
+                    message = `✅ Litige ${disputeId} résolu: Compensation mineure au chauffeur.\n\nDécision: ${decision}`;
+                    break;
+                case 'favor-passenger':
+                    message = `✅ Litige ${disputeId} résolu: En faveur du passager.\n\nDécision: ${decision}`;
+                    break;
+            }
+
+            alert(message);
+            // Dans une vraie application, on ferait un appel API ici
+            location.reload();
+        }
+
+        function escalateDispute(disputeId) {
+            const decisionElement = document.getElementById(`dispute${disputeId.replace('-', '')}-decision`);
+            const comments = decisionElement ? decisionElement.value : '';
+
+            if (!comments) {
+                alert('⚠️ Veuillez ajouter des commentaires expliquant pourquoi ce litige doit être escaladé.');
+                return;
+            }
+
+            alert(`⚠️ Litige ${disputeId} escaladé au support niveau 2.\n\nCommentaires: ${comments}\n\nUn superviseur prendra en charge ce dossier.`);
+            location.reload();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique - EcoRide</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link"><span>🏠</span><span>Accueil</span></a></li>
+                <li><a href="rides.html" class="navbar-link"><span>🚗</span><span>Covoiturages</span></a></li>
+                <li><a href="dashboard.html" class="navbar-link"><span>👤</span><span>Mon Espace</span></a></li>
+                <li><a href="history.html" class="navbar-link active"><span>📅</span><span>Historique</span></a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <button class="navbar-toggle" id="navbarToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <div class="card mb-lg" style="background: var(--gradient-eco); color: white;">
+            <div class="card-body" style="padding: 2rem;">
+                <h1 style="color: white; margin-bottom: 0.5rem;">📅 Mon Historique</h1>
+                <p style="color: rgba(255,255,255,0.9); margin: 0;">Tous vos trajets passés et à venir</p>
+            </div>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚗</div>
+                    <div class="stat-value" id="totalAsDriver">8</div>
+                    <div class="stat-label">Trajets en tant que chauffeur</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎒</div>
+                    <div class="stat-value" id="totalAsPassenger">15</div>
+                    <div class="stat-label">Trajets en tant que passager</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">💰</div>
+                    <div class="stat-value" id="totalCreditsEarned">340</div>
+                    <div class="stat-label">Crédits gagnés</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌱</div>
+                    <div class="stat-value" id="co2Saved">125</div>
+                    <div class="stat-label">kg CO₂ économisés</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="card mb-md">
+            <div class="card-body">
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                    <div>
+                        <label class="form-label" style="margin-bottom: 0.5rem;">Afficher:</label>
+                        <select id="statusFilter" class="form-control" style="min-width: 200px;">
+                            <option value="all">Tous les trajets</option>
+                            <option value="upcoming">À venir</option>
+                            <option value="in_progress">En cours</option>
+                            <option value="completed">Terminés</option>
+                            <option value="cancelled">Annulés</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="form-label" style="margin-bottom: 0.5rem;">Rôle:</label>
+                        <select id="roleFilter" class="form-control" style="min-width: 200px;">
+                            <option value="all">Tous les rôles</option>
+                            <option value="driver">En tant que chauffeur</option>
+                            <option value="passenger">En tant que passager</option>
+                        </select>
+                    </div>
+
+                    <div style="flex: 1;"></div>
+
+                    <div>
+                        <label class="form-label" style="margin-bottom: 0.5rem;">&nbsp;</label>
+                        <button class="btn btn-secondary" onclick="applyFilters()">
+                            <span>🔍</span>
+                            <span>Filtrer</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rides List -->
+        <div id="ridesList">
+            <!-- Upcoming Rides Section -->
+            <div class="mb-lg">
+                <h2 style="margin-bottom: 1rem;">🔜 Trajets à venir</h2>
+
+                <!-- Upcoming Ride 1 - As Driver -->
+                <div class="card mb-md">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <h3 style="margin: 0;">Paris → Lyon</h3>
+                                    <span class="badge badge-success">À venir</span>
+                                    <span class="badge" style="background: var(--primary-green);">Chauffeur</span>
+                                </div>
+                                <p style="color: var(--text-tertiary); margin: 0;">Trajet #1250</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.25rem; font-weight: 600; color: var(--primary-green); margin-bottom: 0.25rem;">+86 crédits</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-tertiary);">2 passagers confirmés</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>📍 Départ:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">1 Place de la République, 75003 Paris</p>
+                            </div>
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>🎯 Arrivée:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">15 Rue de la République, 69001 Lyon</p>
+                            </div>
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>📅 Date:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">20 janvier 2025 • 09:00</p>
+                            </div>
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>🚙 Véhicule:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">Tesla Model 3 ⚡</p>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                            <p style="margin: 0 0 0.5rem 0;"><strong>👥 Passagers confirmés (2/3):</strong></p>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <img src="https://i.pravatar.cc/40?img=2" alt="Passager" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    <div>
+                                        <p style="margin: 0; font-weight: 500;">@marie_d</p>
+                                        <p style="margin: 0; font-size: var(--font-size-sm); color: var(--text-tertiary);">⭐ 4.8/5</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <img src="https://i.pravatar.cc/40?img=3" alt="Passager" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    <div>
+                                        <p style="margin: 0; font-weight: 500;">@julien_p</p>
+                                        <p style="margin: 0; font-size: var(--font-size-sm); color: var(--text-tertiary);">⭐ 4.6/5</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="ride-active.html?id=1250" class="btn btn-primary">
+                                <span>▶️</span>
+                                <span>Démarrer le trajet</span>
+                            </a>
+                            <a href="ride-details.html?id=1250" class="btn btn-secondary">
+                                <span>👁️</span>
+                                <span>Voir les détails</span>
+                            </a>
+                            <button class="btn btn-danger" onclick="cancelRide(1250, 'driver')">
+                                <span>❌</span>
+                                <span>Annuler</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Ride 2 - As Passenger -->
+                <div class="card mb-md">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <h3 style="margin: 0;">Marseille → Nice</h3>
+                                    <span class="badge badge-success">À venir</span>
+                                    <span class="badge badge-info">Passager</span>
+                                </div>
+                                <p style="color: var(--text-tertiary); margin: 0;">Trajet #1251</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.25rem; font-weight: 600; color: var(--danger-red); margin-bottom: 0.25rem;">-35 crédits</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Réservation confirmée</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>📍 Départ:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">Gare Saint-Charles, Marseille</p>
+                            </div>
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>🎯 Arrivée:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">Promenade des Anglais, Nice</p>
+                            </div>
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>📅 Date:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">22 janvier 2025 • 14:30</p>
+                            </div>
+                            <div>
+                                <p style="margin-bottom: 0.5rem;"><strong>🚙 Véhicule:</strong></p>
+                                <p style="margin: 0; color: var(--text-secondary);">Renault Zoe ⚡</p>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                            <p style="margin: 0 0 0.5rem 0;"><strong>🚗 Chauffeur:</strong></p>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <img src="https://i.pravatar.cc/60?img=5" alt="Chauffeur" style="width: 60px; height: 60px; border-radius: 50%;">
+                                <div>
+                                    <p style="margin: 0; font-weight: 600; font-size: 1.1rem;">@sophie_martin</p>
+                                    <p style="margin: 0.25rem 0; color: var(--text-secondary);">⭐ 4.9/5 • 47 trajets</p>
+                                    <p style="margin: 0; font-size: var(--font-size-sm); color: var(--text-tertiary);">Membre depuis 2023</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="ride-details.html?id=1251" class="btn btn-secondary">
+                                <span>👁️</span>
+                                <span>Voir les détails</span>
+                            </a>
+                            <button class="btn btn-danger" onclick="cancelRide(1251, 'passenger')">
+                                <span>❌</span>
+                                <span>Annuler ma réservation</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Rides Section -->
+            <div class="mb-lg">
+                <h2 style="margin-bottom: 1rem;">✅ Trajets terminés</h2>
+
+                <!-- Completed Ride 1 -->
+                <div class="card mb-md">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <h3 style="margin: 0;">Toulouse → Bordeaux</h3>
+                                    <span class="badge badge-success">Terminé</span>
+                                    <span class="badge" style="background: var(--primary-green);">Chauffeur</span>
+                                    <span class="badge" style="background: var(--success-green);">⚡ Écologique</span>
+                                </div>
+                                <p style="color: var(--text-tertiary); margin: 0;">Trajet #1248 • 15 janvier 2025</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.25rem; font-weight: 600; color: var(--primary-green);">+86 crédits</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Durée</p>
+                                <p style="margin: 0; font-weight: 600;">2h 15min</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Distance</p>
+                                <p style="margin: 0; font-weight: 600;">245 km</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Passagers</p>
+                                <p style="margin: 0; font-weight: 600;">3/3</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">CO₂ économisé</p>
+                                <p style="margin: 0; font-weight: 600; color: var(--success-green);">45 kg</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="ride-details.html?id=1248" class="btn btn-secondary btn-sm">
+                                <span>👁️</span>
+                                <span>Voir les détails</span>
+                            </a>
+                            <button class="btn btn-primary btn-sm" onclick="alert('Merci ! Les passagers recevront une notification pour laisser un avis.')">
+                                <span>⭐</span>
+                                <span>Demander des avis</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Ride 2 -->
+                <div class="card mb-md">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <h3 style="margin: 0;">Nantes → Rennes</h3>
+                                    <span class="badge badge-success">Terminé</span>
+                                    <span class="badge badge-info">Passager</span>
+                                </div>
+                                <p style="color: var(--text-tertiary); margin: 0;">Trajet #1245 • 12 janvier 2025</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.25rem; font-weight: 600; color: var(--danger-red);">-28 crédits</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Durée</p>
+                                <p style="margin: 0; font-weight: 600;">1h 30min</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Distance</p>
+                                <p style="margin: 0; font-weight: 600;">110 km</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Chauffeur</p>
+                                <p style="margin: 0; font-weight: 600;">@thomas_l ⭐ 4.9</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Mon avis</p>
+                                <p style="margin: 0; font-weight: 600; color: var(--success-green);">⭐ Donné</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="ride-details.html?id=1245" class="btn btn-secondary btn-sm">
+                                <span>👁️</span>
+                                <span>Voir les détails</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Ride 3 -->
+                <div class="card mb-md">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <h3 style="margin: 0;">Lille → Bruxelles</h3>
+                                    <span class="badge badge-success">Terminé</span>
+                                    <span class="badge badge-info">Passager</span>
+                                    <span class="badge" style="background: var(--success-green);">⚡ Écologique</span>
+                                </div>
+                                <p style="color: var(--text-tertiary); margin: 0;">Trajet #1240 • 8 janvier 2025</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.25rem; font-weight: 600; color: var(--danger-red);">-42 crédits</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Durée</p>
+                                <p style="margin: 0; font-weight: 600;">1h 45min</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Distance</p>
+                                <p style="margin: 0; font-weight: 600;">135 km</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Chauffeur</p>
+                                <p style="margin: 0; font-weight: 600;">@claire_b ⭐ 5.0</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; color: var(--text-tertiary);">Mon avis</p>
+                                <p style="margin: 0; font-weight: 600; color: var(--warning-orange);">⭐ À donner</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="ride-details.html?id=1240" class="btn btn-secondary btn-sm">
+                                <span>👁️</span>
+                                <span>Voir les détails</span>
+                            </a>
+                            <button class="btn btn-primary btn-sm" onclick="alert('Fonctionnalité d\\'ajout d\\'avis à venir !')">
+                                <span>⭐</span>
+                                <span>Laisser un avis</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cancelled Rides Section -->
+            <div class="mb-lg">
+                <h2 style="margin-bottom: 1rem;">❌ Trajets annulés</h2>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <h3 style="margin: 0;">Strasbourg → Colmar</h3>
+                                    <span class="badge badge-danger">Annulé</span>
+                                    <span class="badge" style="background: var(--primary-green);">Chauffeur</span>
+                                </div>
+                                <p style="color: var(--text-tertiary); margin: 0;">Trajet #1235 • Annulé le 10 janvier 2025</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.25rem; font-weight: 600; color: var(--text-tertiary);">Remboursé</div>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--danger-light); padding: 1rem; border-radius: var(--radius-md); border-left: 4px solid var(--danger-red); margin-bottom: 1rem;">
+                            <p style="margin: 0;"><strong>Raison:</strong> Problème technique avec le véhicule. Les passagers ont été remboursés intégralement.</p>
+                        </div>
+
+                        <p style="margin: 0; color: var(--text-tertiary); font-size: var(--font-size-sm);">Date prévue: 12 janvier 2025 • 1 passager concerné</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Vérifier l'authentification
+        if (!window.authManager || !window.authManager.isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+
+        // Filtres
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const roleFilter = document.getElementById('roleFilter').value;
+
+            alert(`Filtres appliqués:\nStatut: ${statusFilter}\nRôle: ${roleFilter}\n\nDans une vraie application, la liste serait filtrée en temps réel.`);
+            // Dans une vraie application, on filtrerait les trajets affichés
+        }
+
+        // Annulation de trajet
+        function cancelRide(rideId, role) {
+            const confirmMsg = role === 'driver'
+                ? 'Êtes-vous sûr de vouloir annuler ce trajet ? Les passagers seront remboursés intégralement.'
+                : 'Êtes-vous sûr de vouloir annuler votre réservation ? Vous serez remboursé selon les conditions d\'annulation.';
+
+            if (confirm(confirmMsg)) {
+                const reason = prompt('Raison de l\'annulation (optionnel):');
+
+                alert(`✅ Trajet #${rideId} annulé avec succès.\n${reason ? 'Raison: ' + reason : ''}\n\nVous serez redirigé vers votre historique.`);
+
+                // Dans une vraie application:
+                // - Appel API pour annuler le trajet
+                // - Remboursement automatique
+                // - Notifications aux autres utilisateurs
+                setTimeout(() => location.reload(), 2000);
+            }
+        }
+
+        // Initialisation des filtres
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('roleFilter').addEventListener('change', applyFilters);
+    </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Espace - EcoRide</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link"><span>🏠</span><span>Accueil</span></a></li>
+                <li><a href="rides.html" class="navbar-link"><span>🚗</span><span>Covoiturages</span></a></li>
+                <li><a href="dashboard.html" class="navbar-link active"><span>👤</span><span>Mon Espace</span></a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-danger" onclick="window.authManager.logout()">
+                    <span>🚪</span>
+                    <span>Déconnexion</span>
+                </button>
+
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <!-- Welcome Section -->
+        <div class="card mb-lg" style="background: var(--gradient-eco); color: white;">
+            <div class="card-body" style="padding: 2rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
+                    <div style="flex: 1;">
+                        <h1 style="color: white; margin-bottom: 0.5rem;">Bonjour <span id="userName">Utilisateur</span> ! 👋</h1>
+                        <p style="color: rgba(255,255,255,0.9); margin: 0;">Bienvenue sur votre tableau de bord EcoRide</p>
+                    </div>
+                    <div style="text-align: center; background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: var(--radius-lg); min-width: 150px;">
+                        <div style="font-size: 3rem; font-weight: bold; color: white;" id="userCredits">0</div>
+                        <div style="color: rgba(255,255,255,0.9);">Crédits disponibles</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <a href="rides.html" class="card" style="text-decoration: none; cursor: pointer; transition: all var(--transition-base);">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔍</div>
+                    <h3 style="margin-bottom: 0.5rem;">Trouver un trajet</h3>
+                    <p style="color: var(--text-tertiary); margin: 0;">Rechercher un covoiturage</p>
+                </div>
+            </a>
+
+            <a href="create-ride.html" class="card" style="text-decoration: none; cursor: pointer; transition: all var(--transition-base);" id="createRideCard">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">➕</div>
+                    <h3 style="margin-bottom: 0.5rem;">Proposer un trajet</h3>
+                    <p style="color: var(--text-tertiary); margin: 0;">Créer un covoiturage</p>
+                </div>
+            </a>
+
+            <a href="#" class="card" style="text-decoration: none; cursor: pointer; transition: all var(--transition-base);" onclick="showProfileSettings(); return false;">
+                <div class="card-body text-center">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚙️</div>
+                    <h3 style="margin-bottom: 0.5rem;">Mon Profil</h3>
+                    <p style="color: var(--text-tertiary); margin: 0;">Gérer mes informations</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="card mb-lg">
+            <div class="card-header">
+                <h3 class="card-title">📊 Mes statistiques</h3>
+            </div>
+            <div class="card-body">
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalRidesAsDriver">0</div>
+                        <div class="stat-label">Trajets proposés</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalRidesAsPassenger">0</div>
+                        <div class="stat-label">Trajets effectués</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="averageRating">5.0</div>
+                        <div class="stat-label">Note moyenne</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Rides -->
+        <div class="card mb-lg">
+            <div class="card-header">
+                <h3 class="card-title">🚗 Mes prochains trajets</h3>
+            </div>
+            <div class="card-body">
+                <div id="upcomingRides">
+                    <div class="empty-state" style="padding: 2rem;">
+                        <div class="empty-state-icon">📅</div>
+                        <h4 class="empty-state-title">Aucun trajet prévu</h4>
+                        <p class="empty-state-text">Vous n'avez pas de trajet à venir pour le moment</p>
+                        <a href="rides.html" class="btn btn-primary">Rechercher un trajet</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Type Selection -->
+        <div class="card" id="userTypeCard">
+            <div class="card-header">
+                <h3 class="card-title">👤 Type de compte</h3>
+            </div>
+            <div class="card-body">
+                <p style="margin-bottom: 1rem;">Sélectionnez votre profil d'utilisation :</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="card" style="cursor: pointer; border: 2px solid var(--border-light);" onclick="setUserType('passenger')" id="passengerCard">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem;">👤</div>
+                            <h4>Passager</h4>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Je recherche des trajets</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="cursor: pointer; border: 2px solid var(--border-light);" onclick="setUserType('driver')" id="driverCard">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem;">🚗</div>
+                            <h4>Chauffeur</h4>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Je propose des trajets</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="cursor: pointer; border: 2px solid var(--border-light);" onclick="setUserType('both')" id="bothCard">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem;">🤝</div>
+                            <h4>Les deux</h4>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Chauffeur et passager</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div class="modal-backdrop" id="profileModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">⚙️ Mon Profil</h3>
+                <button class="modal-close" onclick="closeProfileModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label class="form-label">Photo de profil</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <img id="profilePhoto" src="https://i.pravatar.cc/150?img=1" alt="Photo" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary-green);">
+                            <button type="button" class="btn btn-secondary btn-sm">Changer la photo</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="profilePseudo">Pseudo</label>
+                        <input type="text" id="profilePseudo" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Type de compte</label>
+                        <select id="profileUserType" class="form-control">
+                            <option value="passenger">Passager</option>
+                            <option value="driver">Chauffeur</option>
+                            <option value="both">Les deux</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeProfileModal()">Annuler</button>
+                <button class="btn btn-primary" onclick="saveProfile()">
+                    <span>💾</span>
+                    <span>Enregistrer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
