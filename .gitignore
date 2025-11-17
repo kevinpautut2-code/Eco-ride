@@ -1,33 +1,50 @@
 # Dependencies
-node_modules/
-vendor/
+/backend/vendor/
+/node_modules/
+composer.phar
 
-# Environment variables
+# Environment
 .env
 .env.local
-
-# Database
-*.sql.backup
-mongodb_data/
+.env.*.local
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS
 .DS_Store
 Thumbs.db
 
+# Config files with credentials
+/backend/config/Database.php
+/backend/config/Mail.php
+
 # Logs
 *.log
-logs/
+/backend/logs/
+/logs/
+
+# Temporary files
+/tmp/
+/temp/
+*.tmp
+
+# Uploaded files
+/uploads/
+/storage/
 
 # Cache
-cache/
+/cache/
 *.cache
 
-# Uploads
-uploads/*
-!uploads/.gitkeep
+# Database backups
+*.sql.gz
+*.sql.backup
+
+# PHPUnit
+.phpunit.result.cache
+/coverage/

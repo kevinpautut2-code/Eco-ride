@@ -1,137 +1,107 @@
 # 🌱 EcoRide - Plateforme de Covoiturage Écologique
 
-EcoRide est une plateforme moderne de covoiturage qui encourage les déplacements écologiques et responsables.
+[![PHP](https://img.shields.io/badge/PHP-8.4.14-777BB4?style=flat&logo=php)](https://php.net)
+[![MySQL](https://img.shields.io/badge/MySQL-9.5.0-4479A1?style=flat&logo=mysql)](https://mysql.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0.21-47A248?style=flat&logo=mongodb)](https://mongodb.com)
 
-## 🎨 Design
+EcoRide est une plateforme de covoiturage moderne axée sur l'écologie, développée avec PHP, MySQL et MongoDB.
 
-- Design futuriste et moderne
-- Mode sombre / Mode clair
-- Palette de couleurs écologiques (vert EcoRide)
-- Interface responsive (mobile, tablette, desktop)
+## ✨ Fonctionnalités
 
-## 🚀 Technologies
+- ✅ Inscription/Connexion sécurisée (Argon2id)
+- ✅ Système de crédits (20 offerts)
+- ✅ Recherche trajets avec filtres
+- ✅ Réservation et paiement par crédits
+- ✅ Création trajets avec calcul gains
+- ✅ Historique complet avec annulation
+- ✅ Gestion trajets actifs (start/stop)
+- ✅ Système avis et notes
+- ✅ Dashboards admin/employé
+- ✅ Thème clair/sombre
 
-### Frontend
-- HTML5
-- CSS3 (Design system personnalisé)
-- JavaScript (Vanilla JS)
+## 🔧 Installation rapide
 
-### Backend
-- PHP 8.x
-- PDO pour la base de données relationnelle
-- MongoDB Driver pour NoSQL
-
-### Bases de données
-- MySQL/MariaDB (données relationnelles)
-- MongoDB (données NoSQL - préférences, avis)
-
-## 📦 Installation
-
-### Prérequis
-- PHP >= 8.0
-- MySQL/MariaDB >= 8.0
-- MongoDB >= 5.0
-- Composer
-- Serveur web (Apache/Nginx)
-
-### Installation locale
-
-1. **Cloner le dépôt**
 ```bash
-git clone https://github.com/votre-username/ecoride.git
+# 1. Cloner
+git clone https://github.com/ecoride/ecoride.git
 cd ecoride
+
+# 2. Base de données MySQL
+mysql -u root -p -e "CREATE DATABASE ecoride"
+mysql -u root -p ecoride < database/schema.sql
+
+# 3. Dépendances
+cd backend && composer install
+
+# 4. Configuration
+cp backend/config/Database.example.php backend/config/Database.php
+# Éditer Database.php avec vos paramètres
+
+# 5. Lancer serveurs
+# Terminal 1
+cd backend/api && php -S localhost:8000 router.php
+# Terminal 2  
+cd frontend && python3 -m http.server 8080
 ```
 
-2. **Configuration de la base de données relationnelle**
+Accès: http://localhost:8080
+
+## 📚 Documentation complète
+
+- Installation: [docs/INSTALLATION.md](docs/INSTALLATION.md)
+- API: [docs/API.md](docs/API.md)
+- Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Guide utilisateur: [docs/USER_GUIDE.md](docs/USER_GUIDE.md)
+
+## 🏗️ Architecture
+
+```
+├── frontend/          # HTML, CSS, JS
+├── backend/           # PHP API REST
+│   ├── api/
+│   ├── config/
+│   └── tests/
+├── database/          # SQL, migrations
+└── docs/              # Documentation
+```
+
+### Stack technique
+- **Backend**: PHP 8.4, MySQL 9.5, MongoDB 6.0
+- **Frontend**: HTML5, CSS3, JavaScript ES6+
+- **Sécurité**: Argon2id, CORS, Transactions SQL
+
+## 🔌 API Endpoints
+
 ```bash
-# Créer la base de données
-mysql -u root -p < database/sql/create_database.sql
-
-# Importer les données de test
-mysql -u root -p ecoride < database/sql/seed_data.sql
+POST   /auth/register         # Inscription
+POST   /auth/login            # Connexion
+GET    /rides                 # Recherche trajets
+POST   /rides                 # Créer trajet
+POST   /rides/{id}/book       # Réserver
+POST   /rides/{id}/start      # Démarrer trajet
+POST   /rides/{id}/complete   # Terminer trajet
+DELETE /rides/{id}            # Annuler trajet
+GET    /users/{id}/rides      # Historique conducteur
+GET    /users/{id}/bookings   # Historique passager
 ```
 
-3. **Configuration de MongoDB**
+Documentation complète: [docs/API.md](docs/API.md)
+
+## 🧪 Tests
+
 ```bash
-# Importer les collections MongoDB
-mongoimport --db ecoride --collection preferences --file database/mongodb/preferences.json
-mongoimport --db ecoride --collection reviews --file database/mongodb/reviews.json
+cd backend
+composer test
 ```
-
-4. **Configuration de l'environnement**
-```bash
-# Copier le fichier d'environnement
-cp .env.example .env
-
-# Éditer les variables d'environnement
-nano .env
-```
-
-5. **Configuration du serveur web**
-
-Pour Apache, créer un VirtualHost :
-```apache
-<VirtualHost *:80>
-    ServerName ecoride.local
-    DocumentRoot /path/to/ecoride/frontend
-
-    <Directory /path/to/ecoride/frontend>
-        AllowOverride All
-        Require all granted
-    </Directory>
-</VirtualHost>
-```
-
-6. **Démarrage**
-```bash
-# Ajouter au fichier hosts
-sudo echo "127.0.0.1 ecoride.local" >> /etc/hosts
-
-# Accéder à l'application
-# http://ecoride.local
-```
-
-## 🌐 Déploiement
-
-Voir la documentation complète de déploiement dans `docs/deployment.pdf`
-
-## 📚 Documentation
-
-- **Manuel d'utilisation** : `docs/manuel_utilisation.pdf`
-- **Charte graphique** : `docs/charte_graphique.pdf`
-- **Documentation technique** : `docs/documentation_technique.pdf`
-- **Gestion de projet** : `docs/gestion_projet.pdf`
-
-## 🔐 Comptes de test
-
-### Administrateur
-- Email: admin@ecoride.fr
-- Mot de passe: Admin@2025!
-
-### Employé
-- Email: employe@ecoride.fr
-- Mot de passe: Employe@2025!
-
-### Utilisateur (Chauffeur)
-- Email: chauffeur@ecoride.fr
-- Mot de passe: Chauffeur@2025!
-
-### Utilisateur (Passager)
-- Email: passager@ecoride.fr
-- Mot de passe: Passager@2025!
-
-## 📋 Gestion de projet
-
-Le projet utilise un Kanban disponible sur [Trello/Notion/Jira - Lien]
-
-## 🤝 Contribution
-
-Ce projet est développé dans le cadre de l'évaluation du titre professionnel Développeur Web et Web Mobile.
 
 ## 📄 Licence
 
-Copyright © 2025 EcoRide - Tous droits réservés
+MIT License - Voir [LICENSE](LICENSE)
 
-## 👨‍💻 Auteur
+## 📞 Contact
+
+Email: contact@ecoride.fr
+
+---
 
 Développé avec 💚 pour un monde plus écologique
