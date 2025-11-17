@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contactez l'équipe EcoRide">
+    <title>Contact - EcoRide</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link">
+                    <span>🏠</span>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="rides.html" class="navbar-link">
+                    <span>🚗</span>
+                    <span>Covoiturages</span>
+                </a></li>
+                <li><a href="about.html" class="navbar-link">
+                    <span>ℹ️</span>
+                    <span>À propos</span>
+                </a></li>
+                <li><a href="contact.html" class="navbar-link active">
+                    <span>📧</span>
+                    <span>Contact</span>
+                </a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <a href="login.html" class="btn btn-primary">
+                    <span>👤</span>
+                    <span>Connexion</span>
+                </a>
+
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <!-- Hero Section -->
+        <section style="text-align: center; padding: 4rem 0 2rem;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Contactez-nous</h1>
+            <p style="font-size: 1.25rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+                Une question ? Une suggestion ? N'hésitez pas à nous contacter
+            </p>
+        </section>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem;">
+            <!-- Contact Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Envoyez-nous un message</h2>
+                </div>
+                <div class="card-body">
+                    <form id="contactForm">
+                        <div class="form-group mb-md">
+                            <label for="name" class="form-label">Nom complet *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                class="form-input"
+                                placeholder="Votre nom"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group mb-md">
+                            <label for="email" class="form-label">Email *</label>
+                            <input
+                                type="email"
+                                id="email"
+                                class="form-input"
+                                placeholder="votre.email@exemple.com"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group mb-md">
+                            <label for="subject" class="form-label">Sujet *</label>
+                            <select id="subject" class="form-input" required>
+                                <option value="">Sélectionnez un sujet</option>
+                                <option value="question">Question générale</option>
+                                <option value="bug">Signaler un bug</option>
+                                <option value="suggestion">Suggestion d'amélioration</option>
+                                <option value="partnership">Partenariat</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-md">
+                            <label for="message" class="form-label">Message *</label>
+                            <textarea
+                                id="message"
+                                class="form-input"
+                                rows="6"
+                                placeholder="Votre message..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div id="alertContainer"></div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <span>📧</span>
+                            <span>Envoyer le message</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <div class="card mb-lg">
+                    <div class="card-header">
+                        <h3 class="card-title">Informations de contact</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div style="display: flex; align-items: start; gap: 1rem;">
+                                <div style="font-size: 1.5rem;">📧</div>
+                                <div>
+                                    <strong style="display: block; margin-bottom: 0.25rem;">Email</strong>
+                                    <a href="mailto:contact@ecoride.fr" style="color: var(--primary-green);">contact@ecoride.fr</a>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: start; gap: 1rem;">
+                                <div style="font-size: 1.5rem;">⏰</div>
+                                <div>
+                                    <strong style="display: block; margin-bottom: 0.25rem;">Horaires</strong>
+                                    <span style="color: var(--text-secondary);">Lun - Ven : 9h00 - 18h00</span>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: start; gap: 1rem;">
+                                <div style="font-size: 1.5rem;">⚡</div>
+                                <div>
+                                    <strong style="display: block; margin-bottom: 0.25rem;">Temps de réponse</strong>
+                                    <span style="color: var(--text-secondary);">Moins de 24 heures</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">FAQ Rapide</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <strong style="display: block; margin-bottom: 0.5rem;">Comment créer un trajet ?</strong>
+                                <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+                                    Connectez-vous, puis cliquez sur "Créer un trajet" dans votre tableau de bord.
+                                </p>
+                            </div>
+
+                            <div>
+                                <strong style="display: block; margin-bottom: 0.5rem;">Comment obtenir des crédits ?</strong>
+                                <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+                                    Les crédits s'obtiennent en proposant des trajets ou en participant à la communauté.
+                                </p>
+                            </div>
+
+                            <div>
+                                <strong style="display: block; margin-bottom: 0.5rem;">La plateforme est-elle gratuite ?</strong>
+                                <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+                                    Oui ! EcoRide fonctionne avec un système de crédits gratuits pour tous les membres.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>EcoRide</h3>
+                    <p style="color: var(--text-secondary);">
+                        La plateforme de covoiturage qui met l'écologie au cœur de chaque trajet.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="rides.html">Covoiturages</a></li>
+                        <li><a href="about.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Légal</h3>
+                    <ul class="footer-links">
+                        <li><a href="legal.html">Mentions légales</a></li>
+                        <li><a href="privacy.html">Confidentialité</a></li>
+                        <li><a href="terms.html">CGU</a></li>
+                        <li><a href="cookies.html">Cookies</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@ecoride.fr">📧 contact@ecoride.fr</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // Simple contact form handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.style.marginBottom = '1rem';
+            alert.innerHTML = `
+                <div class="alert-icon">✓</div>
+                <div class="alert-content">
+                    <div class="alert-title">Message envoyé !</div>
+                    <div class="alert-text">Nous vous répondrons dans les plus brefs délais.</div>
+                </div>
+            `;
+
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alert);
+
+            // Reset form
+            this.reset();
+
+            // Remove alert after 5 seconds
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
