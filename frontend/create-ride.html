@@ -24,9 +24,9 @@
             </a>
 
             <ul class="navbar-menu" id="navbarMenu">
-                <li><a href="index.html" class="navbar-link"><span>🏠</span><span>Accueil</span></a></li>
-                <li><a href="rides.html" class="navbar-link"><span>🚗</span><span>Covoiturages</span></a></li>
-                <li><a href="dashboard.html" class="navbar-link"><span>👤</span><span>Mon Espace</span></a></li>
+                <li><a href="index.html" class="navbar-link"><span>Accueil</span></a></li>
+                <li><a href="rides.html" class="navbar-link"><span>Covoiturages</span></a></li>
+                <li><a href="dashboard.html" class="navbar-link"><span>Mon Espace</span></a></li>
             </ul>
 
             <div class="navbar-actions">
@@ -49,14 +49,14 @@
         <div style="max-width: 800px; margin: 0 auto;">
             <div class="card">
                 <div class="card-header">
-                    <h1 style="margin: 0;">🚗 Créer un trajet</h1>
+                    <h1 style="margin: 0;">Créer un trajet</h1>
                     <p style="color: var(--text-secondary); margin: 0.5rem 0 0 0;">Proposez un covoiturage et gagnez des crédits</p>
                 </div>
 
                 <div class="card-body">
                     <form id="createRideForm">
                         <div class="form-group">
-                            <label class="form-label">🚙 Véhicule</label>
+                            <label class="form-label">Véhicule</label>
                             <select id="vehicle" class="form-control" required>
                                 <option value="">Sélectionner un véhicule</option>
                                 <option value="1">Tesla Model 3 - Blanc ⚡</option>
@@ -67,34 +67,34 @@
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div class="form-group">
-                                <label class="form-label">📍 Ville de départ</label>
+                                <label class="form-label">Ville de départ</label>
                                 <input type="text" id="departureCity" class="form-control" placeholder="Paris" required>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">🎯 Ville d'arrivée</label>
+                                <label class="form-label">Ville d'arrivée</label>
                                 <input type="text" id="arrivalCity" class="form-control" placeholder="Lyon" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">📍 Adresse complète de départ</label>
+                            <label class="form-label">Adresse complète de départ</label>
                             <input type="text" id="departureAddress" class="form-control" placeholder="1 Place de la République, 75003 Paris" required>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">🎯 Adresse complète d'arrivée</label>
+                            <label class="form-label">Adresse complète d'arrivée</label>
                             <input type="text" id="arrivalAddress" class="form-control" placeholder="15 Rue de la République, 69001 Lyon" required>
                         </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div class="form-group">
-                                <label class="form-label">📅 Date et heure de départ</label>
+                                <label class="form-label">Date et heure de départ</label>
                                 <input type="datetime-local" id="departureDateTime" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">🏁 Date et heure d'arrivée</label>
+                                <label class="form-label">Date et heure d'arrivée</label>
                                 <input type="datetime-local" id="arrivalDateTime" class="form-control" required>
                             </div>
                         </div>
@@ -106,14 +106,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">💰 Prix (crédits)</label>
+                                <label class="form-label">Prix (crédits)</label>
                                 <input type="number" id="price" class="form-control" min="5" value="45" required>
                                 <div class="form-helper">Minimum 5 crédits (2 crédits de frais plateforme inclus)</div>
                             </div>
                         </div>
 
                         <div style="padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md); margin: 1.5rem 0;">
-                            <h4 style="margin-bottom: 1rem;">💰 Récapitulatif financier</h4>
+                            <h4 style="margin-bottom: 1rem;">Récapitulatif financier</h4>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                                 <span>Prix par passager:</span>
                                 <strong id="displayPrice">45 crédits</strong>
