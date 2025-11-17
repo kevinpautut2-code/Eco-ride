@@ -177,83 +177,44 @@ class AuthManager {
     }
 
     /**
-     * Simuler l'authentification (à remplacer par API)
+     * Authentifier via l'API
      */
     async authenticateUser(email, password) {
-        // Données de test
-        const testUsers = {
-            'admin@ecoride.fr': {
-                id: 1,
-                pseudo: 'admin',
-                email: 'admin@ecoride.fr',
-                role: 'admin',
-                user_type: 'both',
-                credits: 1000,
-                photo_url: 'https://i.pravatar.cc/150?img=1'
-            },
-            'employe@ecoride.fr': {
-                id: 2,
-                pseudo: 'employe1',
-                email: 'employe@ecoride.fr',
-                role: 'employee',
-                user_type: 'passenger',
-                credits: 100,
-                photo_url: 'https://i.pravatar.cc/150?img=2'
-            },
-            'chauffeur@ecoride.fr': {
-                id: 4,
-                pseudo: 'chauffeur',
-                email: 'chauffeur@ecoride.fr',
-                role: 'user',
-                user_type: 'driver',
-                credits: 150,
-                photo_url: 'https://i.pravatar.cc/150?img=4'
-            },
-            'passager@ecoride.fr': {
-                id: 10,
-                pseudo: 'passager',
-                email: 'passager@ecoride.fr',
-                role: 'user',
-                user_type: 'passenger',
-                credits: 50,
-                photo_url: 'https://i.pravatar.cc/150?img=10'
+        try {
+            const response = await window.apiClient.login(email, password);
+
+            if (response.success && response.user) {
+                return response.user;
             }
-        };
 
-        // Simulation de délai réseau
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Vérifier si l'utilisateur existe et le mot de passe est correct
-        if (testUsers[email] && password === 'Test@2025!') {
-            return testUsers[email];
+            return null;
+        } catch (error) {
+            console.error('Erreur API login:', error);
+            throw error;
         }
-
-        return null;
     }
 
     /**
-     * Simuler la création d'un utilisateur (à remplacer par API)
+     * Créer un utilisateur via l'API
      */
     async registerUser(userData) {
-        // Simulation de délai réseau
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            const response = await window.apiClient.register({
+                pseudo: userData.pseudo,
+                email: userData.email,
+                password: userData.password,
+                user_type: 'both'
+            });
 
-        // Vérifier si l'email existe déjà
-        const existingEmails = ['admin@ecoride.fr', 'employe@ecoride.fr', 'chauffeur@ecoride.fr', 'passager@ecoride.fr'];
-        if (existingEmails.includes(userData.email)) {
-            throw new Error('Cet email est déjà utilisé');
+            if (response.success && response.user) {
+                return response.user;
+            }
+
+            throw new Error(response.error || 'Erreur lors de la création du compte');
+        } catch (error) {
+            console.error('Erreur API register:', error);
+            throw error;
         }
-
-        // Créer un nouvel utilisateur
-        return {
-            id: Math.floor(Math.random() * 1000) + 100,
-            pseudo: userData.pseudo,
-            email: userData.email,
-            role: 'user',
-            user_type: 'passenger',
-            credits: 20, // Crédits de bienvenue
-            photo_url: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`
-        };
     }
 
     /**

@@ -181,14 +181,34 @@ class RidesManager {
     }
 
     async fetchRides(params = {}) {
-        // Simuler des données pour la démo
-        // Dans la vraie application, remplacer par: await fetch('/api/rides.php', ...)
+        try {
+            // Préparer les filtres pour l'API
+            const filters = {};
 
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(this.getMockRides());
-            }, 1000);
-        });
+            if (params.departure) {
+                filters.departure_city = params.departure;
+            }
+
+            if (params.arrival) {
+                filters.arrival_city = params.arrival;
+            }
+
+            if (params.date) {
+                filters.date = params.date;
+            }
+
+            // Appeler l'API
+            const response = await window.apiClient.searchRides(filters);
+
+            if (response.success) {
+                return response.rides;
+            }
+
+            return [];
+        } catch (error) {
+            console.error('Erreur API fetchRides:', error);
+            throw error;
+        }
     }
 
     applyFilters() {

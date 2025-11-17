@@ -48,62 +48,18 @@ class RideDetailsManager {
     }
 
     async fetchRideDetails(id) {
-        // Données de test - simuler un délai réseau
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            const response = await window.apiClient.getRideDetails(id);
 
-        // Données mockées
-        const mockRides = {
-            '1': {
-                id: 1,
-                driver_id: 4,
-                driver_pseudo: 'chauffeur',
-                driver_photo: 'https://i.pravatar.cc/150?img=4',
-                driver_rating: 4.8,
-                driver_reviews_count: 12,
-                departure_city: 'Paris',
-                departure_address: '1 Place de la République, 75003 Paris',
-                arrival_city: 'Lyon',
-                arrival_address: '15 Rue de la République, 69001 Lyon',
-                departure_datetime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-                arrival_datetime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000).toISOString(),
-                seats_available: 3,
-                price_credits: 45,
-                is_ecological: true,
-                brand: 'Tesla',
-                model: 'Model 3',
-                color: 'Blanc',
-                energy_type: 'electric',
-                preferences: {
-                    smoking: false,
-                    pets: true,
-                    music: true,
-                    conversation: 'depends',
-                    custom: [
-                        { label: 'Arrêts autorisés', value: true, icon: '⏸️' },
-                        { label: 'Climatisation', value: true, icon: '❄️' },
-                        { label: 'Chargeur téléphone', value: true, icon: '🔌' }
-                    ]
-                },
-                reviews: [
-                    {
-                        reviewer_pseudo: 'Marie',
-                        reviewer_photo: 'https://i.pravatar.cc/150?img=5',
-                        rating: 5,
-                        comment: 'Excellent chauffeur ! Très ponctuel et agréable.',
-                        created_at: '2025-01-10'
-                    },
-                    {
-                        reviewer_pseudo: 'Pierre',
-                        reviewer_photo: 'https://i.pravatar.cc/150?img=11',
-                        rating: 4,
-                        comment: 'Très bon trajet, chauffeur sympathique.',
-                        created_at: '2025-01-08'
-                    }
-                ]
+            if (response.success && response.ride) {
+                return response.ride;
             }
-        };
 
-        return mockRides[id] || null;
+            return null;
+        } catch (error) {
+            console.error('Erreur API getRideDetails:', error);
+            throw error;
+        }
     }
 
     displayRideDetails(ride) {
@@ -367,42 +323,48 @@ window.closeParticipationModal = function() {
 };
 
 window.confirmParticipation = async function() {
-    // Simuler la réservation
     const user = window.authManager.getCurrentUser();
     const ride = window.rideDetailsManager.rideData;
 
     try {
-        // Débiter les crédits
-        user.credits -= ride.price_credits;
+        // Appeler l'API pour réserver
+        const response = await window.apiClient.bookRide(ride.id, user.id);
 
-        // Sauvegarder
-        const storage = localStorage.getItem('ecoride_user') ? localStorage : sessionStorage;
-        storage.setItem('ecoride_user', JSON.stringify(user));
+        if (response.success) {
+            // Mettre à jour les crédits de l'utilisateur
+            user.credits = response.new_credits;
 
-        // Fermer le modal
-        window.closeParticipationModal();
+            // Sauvegarder
+            const storage = localStorage.getItem('ecoride_user') ? localStorage : sessionStorage;
+            storage.setItem('ecoride_user', JSON.stringify(user));
 
-        // Afficher succès
-        const alert = document.createElement('div');
-        alert.className = 'alert alert-success';
-        alert.style.cssText = 'position: fixed; top: 100px; right: 20px; z-index: 9999; max-width: 400px;';
-        alert.innerHTML = `
-            <div class="alert-icon">✓</div>
-            <div class="alert-content">
-                <div class="alert-title">Réservation confirmée !</div>
-                <div class="alert-text">Votre place a été réservée. Rendez-vous le jour J !</div>
-            </div>
-        `;
-        document.body.appendChild(alert);
+            // Fermer le modal
+            window.closeParticipationModal();
 
-        // Rediriger vers le dashboard après 2 secondes
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 2000);
+            // Afficher succès
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.style.cssText = 'position: fixed; top: 100px; right: 20px; z-index: 9999; max-width: 400px;';
+            alert.innerHTML = `
+                <div class="alert-icon">✓</div>
+                <div class="alert-content">
+                    <div class="alert-title">Réservation confirmée !</div>
+                    <div class="alert-text">Votre place a été réservée. Rendez-vous le jour J !</div>
+                </div>
+            `;
+            document.body.appendChild(alert);
+
+            // Rediriger vers le dashboard après 2 secondes
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        } else {
+            throw new Error(response.message || 'Erreur lors de la réservation');
+        }
 
     } catch (error) {
         console.error('Erreur lors de la réservation:', error);
-        alert('Une erreur est survenue');
+        alert('Une erreur est survenue: ' + error.message);
     }
 };
 
