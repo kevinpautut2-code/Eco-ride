@@ -159,38 +159,6 @@
     <script src="js/navigation.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-        // Calculer les gains
-        const priceInput = document.getElementById('price');
-        const seatsInput = document.getElementById('seats');
-
-        function updatePricing() {
-            const price = parseInt(priceInput.value) || 0;
-            const seats = parseInt(seatsInput.value) || 1;
-            const earnings = price - 2;
-            const maxEarnings = earnings * seats;
-
-            document.getElementById('displayPrice').textContent = price + ' crédits';
-            document.getElementById('driverEarnings').textContent = earnings + ' crédits';
-            document.getElementById('maxSeats').textContent = seats;
-            document.getElementById('maxEarnings').textContent = maxEarnings + ' crédits';
-        }
-
-        priceInput.addEventListener('input', updatePricing);
-        seatsInput.addEventListener('input', updatePricing);
-
-        // Soumission du formulaire
-        document.getElementById('createRideForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('✅ Trajet créé avec succès ! Vous serez redirigé vers votre dashboard.');
-            setTimeout(() => window.location.href = 'dashboard.html', 1500);
-        });
-
-        // Date minimale = aujourd'hui
-        const now = new Date();
-        const dateStr = now.toISOString().slice(0, 16);
-        document.getElementById('departureDateTime').min = dateStr;
-        document.getElementById('arrivalDateTime').min = dateStr;
-    </script>
+    <script src="js/create-ride.js"></script>
 </body>
 </html>
