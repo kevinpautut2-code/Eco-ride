@@ -184,6 +184,7 @@ class CreateRideManager {
 
         // Récupérer les données du formulaire
         const formData = {
+            driver_id: this.user.id,
             vehicle_id: parseInt(vehicleId),
             departure_city: document.getElementById('departureCity').value.trim(),
             departure_address: document.getElementById('departureAddress').value.trim(),

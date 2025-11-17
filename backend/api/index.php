@@ -416,6 +416,211 @@ try {
         ]);
     }
 
+    // GET /users/{id}/rides - Trajets créés par l'utilisateur (en tant que conducteur)
+    if ($method === 'GET' && preg_match('#^/users/(\d+)/rides$#', $uri, $matches)) {
+        $userId = $matches[1];
+
+        $stmt = $conn->prepare("
+            SELECT
+                r.*,
+                v.brand,
+                v.model,
+                v.color,
+                v.energy_type,
+                (SELECT COUNT(*) FROM bookings WHERE ride_id = r.id AND status = 'confirmed') as passengers_count,
+                r.seats_available as total_seats
+            FROM rides r
+            LEFT JOIN vehicles v ON r.vehicle_id = v.id
+            WHERE r.driver_id = ?
+            ORDER BY r.departure_datetime DESC
+        ");
+        $stmt->execute([$userId]);
+        $rides = $stmt->fetchAll();
+
+        sendResponse([
+            'success' => true,
+            'rides' => $rides
+        ]);
+    }
+
+    // GET /users/{id}/bookings - Réservations de l'utilisateur (en tant que passager)
+    if ($method === 'GET' && preg_match('#^/users/(\d+)/bookings$#', $uri, $matches)) {
+        $userId = $matches[1];
+
+        $stmt = $conn->prepare("
+            SELECT
+                b.*,
+                r.id as ride_id,
+                r.departure_city,
+                r.departure_address,
+                r.arrival_city,
+                r.arrival_address,
+                r.departure_datetime,
+                r.arrival_datetime,
+                r.price_credits,
+                r.status,
+                u.pseudo as driver_pseudo,
+                v.brand,
+                v.model,
+                v.color,
+                v.energy_type
+            FROM bookings b
+            LEFT JOIN rides r ON b.ride_id = r.id
+            LEFT JOIN users u ON r.driver_id = u.id
+            LEFT JOIN vehicles v ON r.vehicle_id = v.id
+            WHERE b.passenger_id = ?
+            ORDER BY r.departure_datetime DESC
+        ");
+        $stmt->execute([$userId]);
+        $bookings = $stmt->fetchAll();
+
+        sendResponse([
+            'success' => true,
+            'bookings' => $bookings
+        ]);
+    }
+
+    // DELETE /rides/{id} - Annuler un trajet (conducteur)
+    if ($method === 'DELETE' && preg_match('#^/rides/(\d+)$#', $uri, $matches)) {
+        $rideId = $matches[1];
+
+        // Vérifier que le trajet existe
+        $stmt = $conn->prepare("SELECT * FROM rides WHERE id = ?");
+        $stmt->execute([$rideId]);
+        $ride = $stmt->fetch();
+
+        if (!$ride) {
+            sendResponse(['error' => 'Trajet non trouvé'], 404);
+        }
+
+        // Transaction pour annuler le trajet et rembourser les passagers
+        $conn->beginTransaction();
+
+        try {
+            // Récupérer toutes les réservations confirmées
+            $stmt = $conn->prepare("
+                SELECT * FROM bookings WHERE ride_id = ? AND status = 'confirmed'
+            ");
+            $stmt->execute([$rideId]);
+            $bookings = $stmt->fetchAll();
+
+            // Rembourser chaque passager
+            foreach ($bookings as $booking) {
+                // Créditer le passager
+                $stmt = $conn->prepare("
+                    UPDATE users SET credits = credits + ? WHERE id = ?
+                ");
+                $stmt->execute([$booking['credits_amount'], $booking['passenger_id']]);
+
+                // Log la transaction
+                $stmt = $conn->prepare("
+                    INSERT INTO credits_transactions (user_id, amount, transaction_type, description)
+                    VALUES (?, ?, 'credit', ?)
+                ");
+                $stmt->execute([
+                    $booking['passenger_id'],
+                    $booking['credits_amount'],
+                    'Remboursement trajet annulé #' . $rideId
+                ]);
+
+                // Annuler la réservation
+                $stmt = $conn->prepare("
+                    UPDATE bookings SET status = 'cancelled' WHERE id = ?
+                ");
+                $stmt->execute([$booking['id']]);
+
+                // TODO: Envoyer email au passager
+            }
+
+            // Annuler le trajet
+            $stmt = $conn->prepare("
+                UPDATE rides SET status = 'cancelled' WHERE id = ?
+            ");
+            $stmt->execute([$rideId]);
+
+            $conn->commit();
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Trajet annulé avec succès',
+                'passengers_refunded' => count($bookings)
+            ]);
+        } catch (Exception $e) {
+            $conn->rollBack();
+            sendResponse(['error' => 'Erreur lors de l\'annulation: ' . $e->getMessage()], 500);
+        }
+    }
+
+    // DELETE /bookings/{id} - Annuler une réservation (passager)
+    if ($method === 'DELETE' && preg_match('#^/bookings/(\d+)$#', $uri, $matches)) {
+        $bookingId = $matches[1];
+
+        // Vérifier que la réservation existe
+        $stmt = $conn->prepare("SELECT * FROM bookings WHERE id = ?");
+        $stmt->execute([$bookingId]);
+        $booking = $stmt->fetch();
+
+        if (!$booking) {
+            sendResponse(['error' => 'Réservation non trouvée'], 404);
+        }
+
+        if ($booking['status'] !== 'confirmed') {
+            sendResponse(['error' => 'Cette réservation ne peut pas être annulée'], 400);
+        }
+
+        // Transaction pour annuler la réservation et rembourser
+        $conn->beginTransaction();
+
+        try {
+            // Rembourser le passager
+            $stmt = $conn->prepare("
+                UPDATE users SET credits = credits + ? WHERE id = ?
+            ");
+            $stmt->execute([$booking['credits_amount'], $booking['passenger_id']]);
+
+            // Récupérer le nouveau solde
+            $stmt = $conn->prepare("SELECT credits FROM users WHERE id = ?");
+            $stmt->execute([$booking['passenger_id']]);
+            $newCredits = $stmt->fetchColumn();
+
+            // Log la transaction
+            $stmt = $conn->prepare("
+                INSERT INTO credits_transactions (user_id, amount, transaction_type, description)
+                VALUES (?, ?, 'credit', ?)
+            ");
+            $stmt->execute([
+                $booking['passenger_id'],
+                $booking['credits_amount'],
+                'Remboursement réservation annulée #' . $bookingId
+            ]);
+
+            // Annuler la réservation
+            $stmt = $conn->prepare("
+                UPDATE bookings SET status = 'cancelled' WHERE id = ?
+            ");
+            $stmt->execute([$bookingId]);
+
+            // Libérer une place sur le trajet
+            $stmt = $conn->prepare("
+                UPDATE rides SET seats_available = seats_available + 1 WHERE id = ?
+            ");
+            $stmt->execute([$booking['ride_id']]);
+
+            $conn->commit();
+
+            // TODO: Envoyer email au conducteur
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Réservation annulée avec succès',
+                'new_credits' => $newCredits
+            ]);
+        } catch (Exception $e) {
+            $conn->rollBack();
+            sendResponse(['error' => 'Erreur lors de l\'annulation: ' . $e->getMessage()], 500);
+        }
+    }
+
     // Route non trouvée
     sendResponse(['error' => 'Endpoint non trouvé: ' . $method . ' ' . $uri], 404);
 
