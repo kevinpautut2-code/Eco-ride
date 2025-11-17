@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du trajet - EcoRide</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link"><span>🏠</span><span>Accueil</span></a></li>
+                <li><a href="rides.html" class="navbar-link active"><span>🚗</span><span>Covoiturages</span></a></li>
+                <li><a href="about.html" class="navbar-link"><span>ℹ️</span><span>À propos</span></a></li>
+                <li><a href="contact.html" class="navbar-link"><span>📧</span><span>Contact</span></a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <a href="login.html" class="btn btn-primary" id="authBtn">
+                    <span>👤</span>
+                    <span>Connexion</span>
+                </a>
+
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ride Details Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <!-- Back Button -->
+        <div style="margin-bottom: 1.5rem;">
+            <a href="rides.html" class="btn btn-ghost">
+                <span>←</span>
+                <span>Retour aux résultats</span>
+            </a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center" style="padding: 4rem;">
+            <div class="loading-spinner" style="margin: 0 auto;"></div>
+            <p style="margin-top: 1rem;">Chargement des détails...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">😕</div>
+            <h3 class="empty-state-title">Trajet introuvable</h3>
+            <p class="empty-state-text">Ce trajet n'existe pas ou a été supprimé.</p>
+            <a href="rides.html" class="btn btn-primary">Voir les trajets disponibles</a>
+        </div>
+
+        <!-- Ride Content -->
+        <div id="rideContent" style="display: none;">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <!-- Main Content -->
+                <div>
+                    <!-- Ride Header -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <h1 id="rideTitle" style="margin: 0;">Trajet</h1>
+                                <span id="ecoBadge"></span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Route -->
+                            <div class="ride-route" style="margin-bottom: 1.5rem;">
+                                <div class="route-point">
+                                    <div class="route-icon departure">📍</div>
+                                    <div class="route-details">
+                                        <div class="route-location" id="departureCity"></div>
+                                        <div style="color: var(--text-tertiary); font-size: var(--font-size-sm);" id="departureAddress"></div>
+                                        <div class="route-time" id="departureTime"></div>
+                                    </div>
+                                </div>
+
+                                <div class="route-point">
+                                    <div class="route-icon arrival">🎯</div>
+                                    <div class="route-details">
+                                        <div class="route-location" id="arrivalCity"></div>
+                                        <div style="color: var(--text-tertiary); font-size: var(--font-size-sm);" id="arrivalAddress"></div>
+                                        <div class="route-time" id="arrivalTime"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ride Info Grid -->
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                                <div class="info-item">
+                                    <div class="info-icon">👥</div>
+                                    <div class="info-value" id="seatsAvailable">0</div>
+                                    <div class="info-label">places disponibles</div>
+                                </div>
+
+                                <div class="info-item">
+                                    <div class="info-icon">⏱️</div>
+                                    <div class="info-value" id="duration">0h</div>
+                                    <div class="info-label">durée estimée</div>
+                                </div>
+
+                                <div class="info-item">
+                                    <div class="info-icon">💰</div>
+                                    <div class="info-value" id="price">0</div>
+                                    <div class="info-label">crédits</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Driver Info -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <h3 class="card-title">👤 À propos du conducteur</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="ride-driver" style="margin-bottom: 1.5rem;">
+                                <img id="driverPhoto" src="" alt="" class="driver-avatar" style="width: 80px; height: 80px;">
+                                <div style="flex: 1;">
+                                    <h4 id="driverName" style="margin-bottom: 0.5rem;">Nom du conducteur</h4>
+                                    <div class="driver-rating" style="margin-bottom: 0.5rem;">
+                                        <span class="stars" id="driverStars">⭐⭐⭐⭐⭐</span>
+                                        <span id="driverRating">5.0</span>
+                                        <span style="color: var(--text-tertiary);">(<span id="reviewsCount">0</span> avis)</span>
+                                    </div>
+                                    <div id="driverStats" style="display: flex; gap: 1rem; font-size: var(--font-size-sm); color: var(--text-tertiary);"></div>
+                                </div>
+                            </div>
+
+                            <!-- Driver Preferences -->
+                            <div id="driverPreferences" style="margin-top: 1.5rem;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Info -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <h3 class="card-title">🚗 Véhicule</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="vehicle-card" style="background: var(--bg-secondary); border: 2px solid var(--border-medium);">
+                                <div class="vehicle-header">
+                                    <h4 class="vehicle-name" id="vehicleName">Véhicule</h4>
+                                    <span id="vehicleEnergyBadge"></span>
+                                </div>
+                                <div class="vehicle-details" id="vehicleDetails">
+                                    <!-- Détails du véhicule -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">⭐ Avis des passagers</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="reviewsList">
+                                <!-- Reviews will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <!-- Booking Card -->
+                    <div class="card" style="position: sticky; top: 100px;">
+                        <div class="card-body">
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <div class="price-amount" style="font-size: 3rem;" id="sidebarPrice">45</div>
+                                <div class="price-currency">crédits</div>
+                            </div>
+
+                            <button id="participateBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                                <span>🎫</span>
+                                <span>Participer au trajet</span>
+                            </button>
+
+                            <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); font-size: var(--font-size-sm);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Prix par place:</span>
+                                    <strong id="pricePerSeat">45 crédits</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-tertiary);">
+                                    <span>Frais de service:</span>
+                                    <span>Inclus</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--text-tertiary);">
+                                    <span>✓</span>
+                                    <span>Annulation gratuite jusqu'à 24h avant</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--text-tertiary); margin-top: 0.5rem;">
+                                    <span>✓</span>
+                                    <span>Paiement sécurisé</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Participation Modal -->
+    <div class="modal-backdrop" id="participationModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmer votre participation</h3>
+                <button class="modal-close" onclick="closeParticipationModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+                    <div class="alert-icon">ℹ</div>
+                    <div class="alert-content">
+                        <div class="alert-text">
+                            Vous êtes sur le point de réserver une place pour ce trajet.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Prix du trajet:</span>
+                        <strong id="modalPrice">45 crédits</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: var(--text-tertiary); margin-bottom: 0.5rem;">
+                        <span>Votre solde actuel:</span>
+                        <span id="currentBalance">100 crédits</span>
+                    </div>
+                    <div style="border-top: 1px solid var(--border-light); margin-top: 0.5rem; padding-top: 0.5rem; display: flex; justify-content: space-between;">
+                        <span>Solde après réservation:</span>
+                        <strong style="color: var(--primary-green);" id="balanceAfter">55 crédits</strong>
+                    </div>
+                </div>
+
+                <p style="font-size: var(--font-size-sm); color: var(--text-tertiary);">
+                    En confirmant, vous acceptez de payer <strong id="confirmPrice">45 crédits</strong> pour ce trajet.
+                    Les crédits seront débités immédiatement et reversés au conducteur à la fin du trajet.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeParticipationModal()">Annuler</button>
+                <button class="btn btn-primary" onclick="confirmParticipation()">
+                    <span>✓</span>
+                    <span>Confirmer la réservation</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ride-details.js"></script>
+</body>
+</html>

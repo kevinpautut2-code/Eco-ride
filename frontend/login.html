@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connexion à EcoRide - Plateforme de covoiturage écologique">
+    <title>Connexion - EcoRide</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link">
+                    <span>🏠</span>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="rides.html" class="navbar-link">
+                    <span>🚗</span>
+                    <span>Covoiturages</span>
+                </a></li>
+                <li><a href="about.html" class="navbar-link">
+                    <span>ℹ️</span>
+                    <span>À propos</span>
+                </a></li>
+                <li><a href="contact.html" class="navbar-link">
+                    <span>📧</span>
+                    <span>Contact</span>
+                </a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <div class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
+        <div style="max-width: 500px; margin: 0 auto;">
+            <div class="card" style="padding: 2rem;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div class="navbar-logo" style="width: 60px; height: 60px; margin: 0 auto 1rem; font-size: 36px;">🌱</div>
+                    <h1 style="margin-bottom: 0.5rem;">Connexion</h1>
+                    <p style="color: var(--text-secondary);">Accédez à votre espace EcoRide</p>
+                </div>
+
+                <!-- Alert container -->
+                <div id="alertContainer"></div>
+
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="email">📧 Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            placeholder="votre.email@exemple.fr"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">🔒 Mot de passe</label>
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="••••••••"
+                            required
+                            autocomplete="current-password"
+                        >
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="rememberMe" class="checkbox-input">
+                            <span class="checkbox-label">Se souvenir de moi</span>
+                        </label>
+                        <a href="forgot-password.html" style="font-size: var(--font-size-sm); color: var(--primary-green);">
+                            Mot de passe oublié ?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                        <span>🔓</span>
+                        <span>Se connecter</span>
+                    </button>
+                </form>
+
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Pas encore de compte ?
+                    </p>
+                    <a href="register.html" class="btn btn-secondary" style="width: 100%;">
+                        <span>✨</span>
+                        <span>Créer un compte</span>
+                    </a>
+                </div>
+
+                <!-- Quick Login for Demo -->
+                <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                    <p style="font-size: var(--font-size-sm); color: var(--text-tertiary); margin-bottom: 0.5rem; text-align: center;">
+                        🎮 Comptes de démonstration
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; font-size: var(--font-size-xs);">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="quickLogin('admin@ecoride.fr', 'Test@2025!')">
+                            👑 Admin
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="quickLogin('employe@ecoride.fr', 'Test@2025!')">
+                            👔 Employé
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="quickLogin('chauffeur@ecoride.fr', 'Test@2025!')">
+                            🚗 Chauffeur
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="quickLogin('passager@ecoride.fr', 'Test@2025!')">
+                            👤 Passager
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

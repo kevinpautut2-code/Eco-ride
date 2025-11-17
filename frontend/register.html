@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inscription à EcoRide - Rejoignez la communauté écologique">
+    <title>Inscription - EcoRide</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">🌱</div>
+                <span>EcoRide</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html" class="navbar-link">
+                    <span>🏠</span>
+                    <span>Accueil</span>
+                </a></li>
+                <li><a href="rides.html" class="navbar-link">
+                    <span>🚗</span>
+                    <span>Covoiturages</span>
+                </a></li>
+                <li><a href="about.html" class="navbar-link">
+                    <span>ℹ️</span>
+                    <span>À propos</span>
+                </a></li>
+                <li><a href="contact.html" class="navbar-link">
+                    <span>📧</span>
+                    <span>Contact</span>
+                </a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">
+                    <div class="theme-toggle-slider">
+                        <span id="themeIcon">☀️</span>
+                    </div>
+                </button>
+
+                <a href="login.html" class="btn btn-primary">
+                    <span>👤</span>
+                    <span>Connexion</span>
+                </a>
+
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <div class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div class="card" style="padding: 2rem;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div class="navbar-logo" style="width: 60px; height: 60px; margin: 0 auto 1rem; font-size: 36px;">🌱</div>
+                    <h1 style="margin-bottom: 0.5rem;">Créer un compte</h1>
+                    <p style="color: var(--text-secondary);">Rejoignez EcoRide et recevez 20 crédits gratuits !</p>
+                </div>
+
+                <!-- Alert container -->
+                <div id="alertContainer"></div>
+
+                <!-- Register Form -->
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label" for="pseudo">👤 Pseudo</label>
+                        <input
+                            type="text"
+                            id="pseudo"
+                            class="form-control"
+                            placeholder="Votre pseudo unique"
+                            required
+                            minlength="3"
+                            maxlength="50"
+                            autocomplete="username"
+                        >
+                        <div class="form-helper">Minimum 3 caractères, maximum 50</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">📧 Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            placeholder="votre.email@exemple.fr"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">🔒 Mot de passe</label>
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="••••••••"
+                            required
+                            minlength="8"
+                            autocomplete="new-password"
+                        >
+                        <div class="form-helper" id="passwordHelper">
+                            Le mot de passe doit contenir :
+                            <ul style="margin: 0.5rem 0 0 1rem; font-size: var(--font-size-xs);">
+                                <li id="check-length">Au moins 8 caractères</li>
+                                <li id="check-upper">Une majuscule</li>
+                                <li id="check-lower">Une minuscule</li>
+                                <li id="check-number">Un chiffre</li>
+                                <li id="check-special">Un caractère spécial</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">🔒 Confirmer le mot de passe</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            class="form-control"
+                            placeholder="••••••••"
+                            required
+                            autocomplete="new-password"
+                        >
+                        <div class="form-error" id="confirmPasswordError" style="display: none;">
+                            Les mots de passe ne correspondent pas
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="acceptTerms" class="checkbox-input" required>
+                            <span class="checkbox-label">
+                                J'accepte les <a href="terms.html" style="color: var(--primary-green);">conditions générales d'utilisation</a>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="newsletter" class="checkbox-input">
+                            <span class="checkbox-label">
+                                Je souhaite recevoir les actualités EcoRide par email
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="submitBtn">
+                        <span>✨</span>
+                        <span>Créer mon compte</span>
+                    </button>
+                </form>
+
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+                    <p style="color: var(--text-secondary);">
+                        Vous avez déjà un compte ?
+                        <a href="login.html" style="color: var(--primary-green); font-weight: var(--font-weight-semibold);">
+                            Se connecter
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Benefits -->
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--gradient-eco); border-radius: var(--radius-md); color: white;">
+                    <h3 style="color: white; margin-bottom: 1rem; font-size: var(--font-size-lg);">🎁 Avantages de l'inscription</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>💰</span>
+                            <span>20 crédits offerts à l'inscription</span>
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>🌱</span>
+                            <span>Accès aux trajets écologiques</span>
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>⭐</span>
+                            <span>Système d'avis et de notation</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span>🔒</span>
+                            <span>Paiements sécurisés</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>© 2025 EcoRide - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/theme.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
